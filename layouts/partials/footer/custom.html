@@ -1,0 +1,48 @@
+<!-- 【custom.html】-Live2D 看板娘加载脚本 -->
+{{ $cssResource := resources.Get "waifu/waifu.css" }}
+{{ $tipsJsonResource := resources.Get "waifu/waifu-tips.json" }}
+
+{{ if and $cssResource $tipsJsonResource }}
+{{ $cssPath := $cssResource.Permalink }}
+{{ $tipsJsonPath := $tipsJsonResource.Permalink }}
+
+<script>
+    // Live2D 核心资源 CDN 路径
+    const live2dCdnPath = "https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/";
+
+    // 异步加载 CSS/JS 资源的工具函数
+    function loadResource(url, type) {
+        return new Promise((resolve, reject) => {
+            const tag = type === "css"
+                ? Object.assign(document.createElement("link"), { rel: "stylesheet", href: url })
+                : Object.assign(document.createElement("script"), { src: url });
+
+            tag.onload = () => resolve(url);
+            tag.onerror = () => reject(new Error(`资源加载失败: ${url}`));
+            document.head.appendChild(tag);
+        });
+    }
+
+    // 仅桌面端（视口宽度 ≥ 768px）加载看板娘
+    if (screen.width >= 768) {
+        Promise.all([
+            loadResource("{{ $cssPath }}", "css"),
+            loadResource(live2dCdnPath + "live2d.min.js", "js"),
+            loadResource(live2dCdnPath + "waifu-tips.js", "js")
+        ]).then(() => {
+            // 配置选项的具体用法见 README.md
+            initWidget({
+                waifuPath: "{{ $tipsJsonPath }}",
+                cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
+                tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
+            });
+        }).catch(err => {
+            console.error("Live2D 加载异常:", err);
+        });
+    }
+</script>
+{{ else }}
+<script>
+    console.warn("Live2D 资源文件未找到，请检查 assets 目录下是否存在 waifu/waifu.css 和 waifu/waifu-tips.json");
+</script>
+{{ end }}
