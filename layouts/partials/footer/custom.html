@@ -1,7 +1,47 @@
 <!-- 【custom.html】-Live2D 看板娘加载脚本 -->
 {{ $cssResource := resources.Get "waifu/waifu.css" }}
 {{ $tipsJsonResource := resources.Get "waifu/waifu-tips.json" }}
+{{ $particlesJsResource := resources.Get "background/particles.min.js" }}
+{{ $particlesConfigResource := resources.Get "background/particlesjs-config.json" }}
 
+<!-- Particles.js 背景特效 -->
+<div id="particles-js"></div>
+
+{{ if and $particlesJsResource $particlesConfigResource }}
+<script src="{{ $particlesJsResource.Permalink }}"></script>
+<script>
+    particlesJS.load('particles-js', '{{ $particlesConfigResource.Permalink }}', function () {
+        console.log('particles.js loaded - callback');
+    });
+</script>
+{{ else }}
+<script>
+    console.warn("particles.js 资源文件未找到，请检查 assets 目录下是否存在 background/particles.min.js 和 background/particlesjs-config.json");
+</script>
+{{ end }}
+
+<style>
+    #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+    /* 确保 Live2D 看板娘显示在最上层 */
+    #waifu {
+        z-index: 9999 !important;
+        position: fixed !important;
+    }
+
+    #waifu-tips {
+        z-index: 10000 !important;
+    }
+</style>
+
+<!-- Live2D 看板娘 -->
 {{ if and $cssResource $tipsJsonResource }}
 {{ $cssPath := $cssResource.Permalink }}
 {{ $tipsJsonPath := $tipsJsonResource.Permalink }}
@@ -30,12 +70,17 @@
             loadResource(live2dCdnPath + "live2d.min.js", "js"),
             loadResource(live2dCdnPath + "waifu-tips.js", "js")
         ]).then(() => {
-            // 配置选项的具体用法见 README.md
-            initWidget({
-                waifuPath: "{{ $tipsJsonPath }}",
-                cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
-                tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
-            });
+            // 确保在 DOM 加载完成后初始化
+            if (typeof initWidget === 'function') {
+                // 配置选项的具体用法见 README.md
+                initWidget({
+                    waifuPath: "{{ $tipsJsonPath }}",
+                    cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
+                    tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
+                });
+            } else {
+                console.error("initWidget 函数未定义");
+            }
         }).catch(err => {
             console.error("Live2D 加载异常:", err);
         });
