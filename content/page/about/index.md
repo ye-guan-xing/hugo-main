@@ -1,13 +1,11 @@
 ---
-title: About
-description: Hugo, the world's fastest framework for building websites
+title: 我
+description: 我是acye，一名Web全栈工程师
 date: '2019-02-28'
 aliases:
-  - about-us
-  - about-hugo
-  - contact
-license: CC BY-NC-ND
-lastmod: '2020-10-09'
+  - 关于acye
+  - 个人介绍
+lastmod: '2025-10-20'
 menu:
     main: 
         weight: -90
@@ -15,20 +13,14 @@ menu:
             icon: user
 ---
 
-Written in Go, Hugo is an open source static site generator available under the [Apache License 2.0.](https://github.com/gohugoio/hugo/blob/master/LICENSE) Hugo supports TOML, YAML and JSON data file types, Markdown and HTML content files and uses shortcodes to add rich content. Other notable features are taxonomies, multilingual mode, image processing, custom output formats, HTML/CSS/JS minification and support for Sass SCSS workflows.
+你好，我是acye，一名专注于Web开发的全栈工程师。
 
-Hugo makes use of a variety of open source projects including:
+从前端交互到后端架构，我擅长打通Web开发的全流程：  
+- 前端：熟练使用HTML5、CSS3、JavaScript（ES6+），以及React、Vue等框架构建响应式、高性能的用户界面；  
+- 后端：精通Node.js等技术栈，设计并实现稳定的服务端逻辑与API；  
+- 数据库：熟悉MySQL、MongoDB等数据存储方案，擅长数据建模与优化；  
+- 工程化：掌握Docker、CI/CD流程，热衷通过自动化工具提升开发效率。
+我始终相信“用户体验至上”，习惯从产品视角思考技术实现，既关注代码的优雅性，也重视系统的稳定性与可扩展性。
 
-* https://github.com/yuin/goldmark
-* https://github.com/alecthomas/chroma
-* https://github.com/muesli/smartcrop
-* https://github.com/spf13/cobra
-* https://github.com/spf13/viper
-
-Hugo is ideal for blogs, corporate websites, creative portfolios, online magazines, single page applications or even a website with thousands of pages.
-
-Hugo is for people who want to hand code their own website without worrying about setting up complicated runtimes, dependencies and databases.
-
-Websites built with Hugo are extremely fast, secure and can be deployed anywhere including, AWS, GitHub Pages, Heroku, Netlify and any other hosting provider.
-
-Learn more and contribute on [GitHub](https://github.com/gohugoio).
+除了工作，我喜欢在技术社区分享经验，也常参与开源项目贡献。如果你有技术交流或合作需求，欢迎随时联系我,我的邮箱是2024352805@qq.com，
+[Github](https://github.com/ye-guan-xing)
