@@ -21,7 +21,7 @@ tags : ['项目开发', '全栈开发']
 ### 第1步：安装必要软件
 
 #### 1.1 安装 Node.js（后端运行环境）
-- 访问：https://nodejs.org
+- 访问：[Node.js](https://nodejs.org)
 - 下载 **LTS版本**（长期支持版）
 - 双击安装，全部点"下一步"
 - **验证安装**：按 `Win + R`，输入 `cmd` 回车，输入：
@@ -38,16 +38,16 @@ npm install -g @vue/cli
 等待安装完成（可能需要几分钟）
 
 #### 1.3 安装微信开发者工具（小程序开发）
-- 访问：https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html
+- 访问：[微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)
 - 下载"稳定版"，安装后用微信扫码登录
 
 #### 1.4 安装 MySQL（数据库）
-- 访问：https://dev.mysql.com/downloads/mysql/
+- 访问：[MySQL Community Server](https://dev.mysql.com/downloads/mysql/)
 - 下载 MySQL Community Server
 - 安装时记住设置的**root密码**（建议设为 `123456`）
 
 #### 1.5 安装 DataGrip（数据库可视化工具）
-- 访问：https://www.jetbrains.com/datagrip/
+- 访问：[DataGrip](https://www.jetbrains.com/datagrip/)
 - 下载安装，学生可免费使用（用教育邮箱注册）
 - 或使用30天免费试用
 
@@ -1439,7 +1439,7 @@ Page({
         <text class="category-name">{{item.name}}</text>
       </view>
     </view>
-  </view>
+  </div>
 
   <!-- 推荐服务 -->
   <view class="recommend-section">
