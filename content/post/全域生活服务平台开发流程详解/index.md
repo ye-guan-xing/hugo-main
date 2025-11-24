@@ -1,58 +1,72 @@
 ---
-draft: true
+draft: flase
 date: 2025-10-20 16:36:00 +0800
-title: '全域生活服务平台开发流程详解'
+title: "全域生活服务平台开发流程详解"
 categories: ["web开发"]
-tags : ['项目开发', '全栈开发']
+tags: ["项目开发", "全栈开发"]
 ---
+
 # 全域生活服务平台 - 从零开始完整开发指南
 
 ## 🎯 项目概述
+
 我们将构建一个完整的全域生活服务平台，包含：
-- **Web管理后台**：管理员管理商家、服务、订单
+
+- **Web 管理后台**：管理员管理商家、服务、订单
 - **微信小程序**：用户浏览服务、下单
-- **后端API**：Node.js + Express + MySQL
-- **数据库**：MySQL，使用DataGrip管理
+- **后端 API**：Node.js + Express + MySQL
+- **数据库**：MySQL，使用 DataGrip 管理
 
 ---
 
 ## 🛠️ 阶段一：项目准备与环境搭建
 
-### 第1步：安装必要软件
+### 第 1 步：安装必要软件
 
 #### 1.1 安装 Node.js（后端运行环境）
+
 - 访问：[Node.js](https://nodejs.org)
-- 下载 **LTS版本**（长期支持版）
+- 下载 **LTS 版本**（长期支持版）
 - 双击安装，全部点"下一步"
 - **验证安装**：按 `Win + R`，输入 `cmd` 回车，输入：
+
 ```bash
 node -v
 ```
+
 显示版本号如 `v18.x.x` 即成功！
 
 #### 1.2 安装 Vue CLI（网页管理后台工具）
-在cmd中继续输入：
+
+在 cmd 中继续输入：
+
 ```bash
 npm install -g @vue/cli
 ```
+
 等待安装完成（可能需要几分钟）
 
 #### 1.3 安装微信开发者工具（小程序开发）
+
 - 访问：[微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)
 - 下载"稳定版"，安装后用微信扫码登录
 
 #### 1.4 安装 MySQL（数据库）
+
 - 访问：[MySQL Community Server](https://dev.mysql.com/downloads/mysql/)
 - 下载 MySQL Community Server
-- 安装时记住设置的**root密码**（建议设为 `123456`）
+- 安装时记住设置的**root 密码**（建议设为 `123456`）
 
 #### 1.5 安装 DataGrip（数据库可视化工具）
+
 - 访问：[DataGrip](https://www.jetbrains.com/datagrip/)
 - 下载安装，学生可免费使用（用教育邮箱注册）
-- 或使用30天免费试用
+- 或使用 30 天免费试用
 
-### 第2步：创建项目文件夹结构
-在D盘创建项目文件夹：
+### 第 2 步：创建项目文件夹结构
+
+在 D 盘创建项目文件夹：
+
 ```
 D:/life-service/
 ├── server/          （后端API）
@@ -60,9 +74,10 @@ D:/life-service/
 └── mini-user/       （微信小程序）
 ```
 
-### 第3步：配置 DataGrip 连接数据库
+### 第 3 步：配置 DataGrip 连接数据库
 
 #### 3.1 连接 MySQL
+
 1. 打开 DataGrip，点击 **"New Project"**
 2. 项目名称：`life_service_platform`
 3. 在右侧 "Database" 面板，点击 **"+"** → **"Data Source"** → **"MySQL"**
@@ -77,17 +92,22 @@ D:/life-service/
 6. 点击 **"OK"**
 
 #### 3.2 创建数据库
+
 在 DataGrip 中执行 SQL 创建数据库：
+
 1. 按 `Ctrl+Enter` 打开新查询窗口
 2. 输入并执行：
+
 ```sql
-CREATE DATABASE IF NOT EXISTS life_service 
-DEFAULT CHARACTER SET utf8mb4 
+CREATE DATABASE IF NOT EXISTS life_service
+DEFAULT CHARACTER SET utf8mb4
 DEFAULT COLLATE utf8mb4_unicode_ci;
 ```
 
 #### 3.3 创建数据表
+
 在 DataGrip 中执行以下 SQL 创建表：
+
 ```sql
 -- 1. 商家表
 CREATE TABLE merchants (
@@ -126,15 +146,16 @@ CREATE TABLE orders (
 ```
 
 #### 3.4 插入测试数据
+
 ```sql
 -- 插入测试商家
-INSERT INTO merchants (name, address, phone, status) VALUES 
+INSERT INTO merchants (name, address, phone, status) VALUES
 ('阳光家政', '北京市朝阳区建国路100号', '13800138000', 1),
 ('快速维修', '上海市浦东新区张江路200号', '13900139000', 1),
 ('保洁专家', '广州市天河区体育西路300号', '13700137000', 1);
 
 -- 插入测试服务
-INSERT INTO services (merchant_id, name, price, category, stock, status) VALUES 
+INSERT INTO services (merchant_id, name, price, category, stock, status) VALUES
 (1, '日常保洁', 150.00, '家政', 10, 1),
 (1, '深度清洁', 300.00, '家政', 5, 1),
 (2, '空调维修', 200.00, '维修', 8, 1),
@@ -143,26 +164,32 @@ INSERT INTO services (merchant_id, name, price, category, stock, status) VALUES
 
 ---
 
-## 💻 阶段二：后端API开发（2-3天）
+## 💻 阶段二：后端 API 开发（2-3 天）
 
-### 第1步：创建后端项目
-1. 打开cmd，进入server文件夹：
+### 第 1 步：创建后端项目
+
+1. 打开 cmd，进入 server 文件夹：
+
 ```bash
 cd D:/life-service/server
 ```
 
 2. 初始化项目：
+
 ```bash
 npm init -y
 ```
 
 3. 安装依赖包：
+
 ```bash
 npm install express mysql2 cors nodemon
 ```
 
-### 第2步：创建项目文件结构
+### 第 2 步：创建项目文件结构
+
 在 `server` 文件夹中创建以下文件结构：
+
 ```
 server/
 ├── app.js           （主入口文件）
@@ -178,269 +205,386 @@ server/
     └── orderCtrl.js
 ```
 
-### 第3步：编写后端代码
+### 第 3 步：编写后端代码
 
 #### 3.1 数据库连接配置 (db/index.js)
+
 ```javascript
-const mysql = require('mysql2/promise');
+const mysql = require("mysql2/promise");
 
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: '123456',  // 改成你的MySQL密码
-  database: 'life_service',
-  port: 3306
+  host: "localhost",
+  user: "root",
+  password: "123456",
+  database: "life_server",
+  port: 3306,
 });
-
-console.log('✅ 数据库连接成功！');
+console.log("数据库连接成功！");
 module.exports = pool;
 ```
 
-#### 3.2 主入口文件 (app.js)
-```javascript
-const express = require('express');
-const cors = require('cors');
-const app = express();
+- 建议写一个 test.js 文件，测试数据库连接是否成功
 
-// 中间件
+```javascript
+// 引入我们创建的连接池
+const pool = require("./index.js");
+// 执行一条简单的 SQL：查询 MySQL 数据库的版本（不需要创建表，通用测试）
+pool.query("SELECT VERSION() AS version", (err, results) => {
+  // 回调函数：SQL 执行完成后会触发这个函数
+  if (err) {
+    console.error("数据库操作失败：", err.message);
+    return;
+  }
+  console.log("数据库连接成功！MySQL 版本是：", results[0].version);
+});
+
+// 测试完成后，关闭连接池ps(我一般不建议关,除非你有需求）
+// pool.end();
+```
+
+#### 3.2 主入口文件 (app.js)
+
+```javascript
+const express = require("express");
+const cors = require("cors");
+const app = express();
+//中间件
+
 app.use(express.json());
 app.use(cors());
+//路由（比作一个餐厅的话，像是服务员）
 
-// 引入路由
-const merchantRouter = require('./routes/merchant');
-const serviceRouter = require('./routes/service'); 
-const orderRouter = require('./routes/order');
+const merchantRouder = require("./routes/merchant");
+const customerRouder = require("./routes/service");
+const orderRouder = require("./routes/order");
+//使用路由
 
-// 使用路由
-app.use('/api/merchant', merchantRouter);
-app.use('/api/service', serviceRouter);
-app.use('/api/order', orderRouter);
+app.use("/api/merchant", merchantRouder);
+app.use("/api/service", customerRouder);
+app.use("/api/order", orderRouder);
+//启动
 
-// 启动服务
-app.listen(3000, () => {
-  console.log('✅ 后端服务启动成功！');
-  console.log('📍 访问地址: http://localhost:3000');
+app.listen(8080, () => {
+  console.log("服务器启动成功！");
+  console.log("http://localhost:8080");
 });
 ```
 
 #### 3.3 商家控制器 (controllers/merchantCtrl.js)
-```javascript
-const pool = require('../db');
 
-// 新增商家
-exports.addMerchant = async (req, res) => {
-  const { name, address, phone } = req.body;
-  
+- 控制器是实际干活的（像是餐厅的主厨）
+
+```javascript
+const pool = require("../db");
+
+//获取商家列表
+exports.getMerchantList = async (req, res) => {
   try {
-    const [result] = await pool.execute(
-      'INSERT INTO merchants (name, address, phone) VALUES (?, ?, ?)',
-      [name, address, phone]
-    );
-    
-    res.json({ 
-      code: 200, 
-      msg: '新增商家成功！', 
-      data: { id: result.insertId } 
+    //执行
+    const [result] = await pool.execute(`SELECT * FROM merchants`);
+    res.json({
+      code: 200,
+      message: "获取成功",
+      data: result,
     });
+    //报错
   } catch (err) {
-    res.json({ 
-      code: 500, 
-      msg: '服务器出错啦', 
-      error: err.message 
+    res.json({
+      code: 500,
+      message: "获取失败",
+      error: err.message,
     });
   }
 };
 
-// 获取商家列表
-exports.getMerchants = async (req, res) => {
+//新增
+exports.addMerchant = async (req, res) => {
+  //获取数据
+  const { name, address, phone } = req.body;
   try {
-    const [rows] = await pool.execute('SELECT * FROM merchants');
-    res.json({ 
-      code: 200, 
-      data: rows 
+    const [result] = await pool.execute(
+      `INSERT INTO merchants (name,address,phone) VALUES(?,?,?)`,
+      [name, address, phone]
+    );
+    res.json({
+      code: 200,
+      message: "添加成功",
+      data: { id: result.insertId },
     });
+    //报错
   } catch (err) {
-    res.json({ 
-      code: 500, 
-      msg: '获取商家列表失败', 
-      error: err.message 
+    res.json({
+      code: 500,
+      message: "添加失败",
+      data: err.message,
+    });
+    console.log(err);
+  }
+};
+
+// 审核商家（更新状态）
+exports.approveMerchant = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [result] = await pool.execute(
+      "UPDATE merchants SET status = 1 WHERE id = ?",
+      [id]
+    );
+    if (result.affectedRows === 1) {
+      res.json({
+        code: 200,
+        msg: "商家审核通过！",
+      });
+    } else {
+      res.json({
+        code: 404,
+        msg: "商家不存在",
+      });
+    }
+  } catch (err) {
+    res.json({
+      code: 500,
+      msg: "服务器出错",
+      error: err.message,
     });
   }
 };
 ```
 
 #### 3.4 商家路由 (routes/merchant.js)
+
 ```javascript
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const merchantCtrl = require('../controllers/merchantCtrl');
 
-// 新增商家
-router.post('/add', merchantCtrl.addMerchant);
+//引入控制器
+const merchantCtrl = require("../controllers/merchantCtrl");
 
-// 获取商家列表  
-router.get('/list', merchantCtrl.getMerchants);
+//发送到/add，用什么文件的什么方法处理
+router.post("/add", merchantCtrl.addMerchant);
 
+router.get("/list", merchantCtrl.getMerchantList);
+
+// 审核商家
+router.put("/approve/:id", merchantCtrl.approveMerchant);
+
+//导出让add.js使用
 module.exports = router;
 ```
 
 #### 3.5 服务控制器 (controllers/serviceCtrl.js)
-```javascript
-const pool = require('../db');
 
-// 获取服务列表
+```javascript
+const pool = require("../db");
+// 关联 merchants 表的本质是通过数据库的关联查询能力，
+// 一次性整合 “服务” 和 “商家” 的关联数据，
+// 既满足了前端展示 “服务所属商家” 的业务需求
+// 即使右表（merchants）中没有匹配的记录
+// （比如商家被删除，但服务记录未清理），左表（services）的记录依然会被返回（此时商家名称为 NULL）
 exports.getServices = async (req, res) => {
   const { category } = req.query;
-  
-  try {
-    let sql = `
-      SELECT s.*, m.name as merchant_name 
-      FROM services s 
-      LEFT JOIN merchants m ON s.merchant_id = m.id 
-      WHERE s.status = 1
+  let sql = `
+    SELECT s.*,m.name AS merchant_name
+    FROM services AS s
+    LEFT JOIN merchants AS m ON s.merchant_id = m.id
+    where 1=1
     `;
-    let params = [];
-    
-    if (category && category !== '全部') {
-      sql += ' AND s.category = ?';
-      params.push(category);
-    }
-    
-    const [rows] = await pool.execute(sql, params);
-    res.json({ 
-      code: 200, 
-      data: rows 
+  let params = [];
+  // 根据前端传递的分类参数（category）
+  // 动态为 SQL 查询添加 “服务分类” 筛选条件，实现 “按分类筛选服务列表” 的功能，同时兼顾灵活性和安全性。
+  if (category && category !== "all") {
+    sql += ` AND s.category=?`;
+    params.push(category);
+  }
+  try {
+    const [row] = await pool.execute(sql, params);
+    res.json({
+      code: 200,
+      message: "获取成功",
+      data: row,
     });
   } catch (err) {
-    res.json({ 
-      code: 500, 
-      msg: '获取服务列表失败', 
-      error: err.message 
+    res.json({
+      code: 500,
+      message: "获取失败",
+      error: err.message,
     });
   }
 };
 
-// 新增服务
+//新增
 exports.addService = async (req, res) => {
   const { merchant_id, name, price, category, image_url, stock } = req.body;
-  
   try {
     const [result] = await pool.execute(
-      'INSERT INTO services (merchant_id, name, price, category, image_url, stock) VALUES (?, ?, ?, ?, ?, ?)',
-      [merchant_id, name, price, category, image_url, stock]
+      `INSERT INTO services (name,price,category, image_url,merchant_id,stock) VALUES(?,?,?,?,?,?)`,
+      [name, price, category, image_url, merchant_id, stock]
     );
-    
-    res.json({ 
-      code: 200, 
-      msg: '新增服务成功！', 
-      data: { id: result.insertId } 
+    res.json({
+      code: 200,
+      message: "新增服务成功",
+      data: { id: result.insertId },
     });
   } catch (err) {
-    res.json({ 
-      code: 500, 
-      msg: '新增服务失败', 
-      error: err.message 
+    res.json({
+      code: 500,
+      message: "新增服务失败",
+      data: err.message,
     });
+  }
+};
+
+// 服务上架（更新状态为“上架”）
+exports.publishService = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [result] = await pool.execute(
+      "UPDATE services SET status = 1 WHERE id = ?",
+      [id]
+    );
+    if (result.affectedRows === 1) {
+      res.json({ code: 200, msg: "服务上架成功！" });
+    } else {
+      res.json({ code: 404, msg: "服务不存在" });
+    }
+  } catch (err) {
+    res.json({ code: 500, msg: "服务器出错", error: err.message });
+  }
+};
+
+// 服务下架（更新状态为“下架”）
+exports.unpublishService = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [result] = await pool.execute(
+      "UPDATE services SET status = 0 WHERE id = ?",
+      [id]
+    );
+    if (result.affectedRows === 1) {
+      res.json({ code: 200, msg: "服务下架成功！" });
+    } else {
+      res.json({ code: 404, msg: "服务不存在" });
+    }
+  } catch (err) {
+    res.json({ code: 500, msg: "服务器出错", error: err.message });
   }
 };
 ```
 
 #### 3.6 服务路由 (routes/service.js)
+
 ```javascript
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const serviceCtrl = require('../controllers/serviceCtrl');
+const serviceCtrl = require("../controllers/serviceCtrl");
 
 // 获取服务列表
-router.get('/list', serviceCtrl.getServices);
+router.get("/list", serviceCtrl.getServices);
 
 // 新增服务
-router.post('/add', serviceCtrl.addService);
+router.post("/add", serviceCtrl.addService);
+
+// 服务上架
+router.put("/publish/:id", serviceCtrl.publishService);
+
+router.put("/unpublish/:id", serviceCtrl.unpublishService);
 
 module.exports = router;
 ```
 
 #### 3.7 订单控制器 (controllers/orderCtrl.js)
-```javascript
-const pool = require('../db');
 
-// 创建订单
+```javascript
+const pool = require("../db");
+
+//创建定单
 exports.createOrder = async (req, res) => {
   const { service_id, user_name, user_phone } = req.body;
-  
   try {
     const [result] = await pool.execute(
-      'INSERT INTO orders (service_id, user_name, user_phone) VALUES (?, ?, ?)',
+      `INSERT INTO orders (service_id,user_name,user_phone) VALUES(?,?,?)`,
       [service_id, user_name, user_phone]
     );
-    
-    res.json({ 
-      code: 200, 
-      msg: '订单创建成功！', 
-      data: { id: result.insertId } 
+    res.json({
+      code: 200,
+      message: "创建定单成功",
+      data: { id: result.insertId },
     });
   } catch (err) {
-    res.json({ 
-      code: 500, 
-      msg: '创建订单失败', 
-      error: err.message 
+    res.json({
+      code: 500,
+      message: "创建定单失败",
+      error: err.message,
     });
   }
 };
 
-// 获取订单列表
+// WHERE 1=1
+// 这是一个 “技巧性写法”，方便后续动态添加条件。
+// 比如后面有 if (status !== undefined) 时，
+// 会拼接 AND o.status = ?。如果没有 1=1，初始的 WHERE 子句是空的
+// 第一次添加条件时需要写 WHERE o.status = ?，第二次添加才写 AND ...，代码里就要判断 “是不是第一个条件”，很麻烦。
+// 有了 1=1 后，不管后面加多少条件，直接用 AND ... 拼接就行
+// （比如 WHERE 1=1 AND o.status=? AND o.user_id=?），简化了动态条件的拼接逻辑。
+
+//stayus 0:待处理 1:处理中 2:完成
+
+//获取定单列表
 exports.getOrders = async (req, res) => {
   const { status } = req.query;
-  
   try {
-    let sql = `
-      SELECT o.*, s.name as service_name, s.price, m.name as merchant_name 
-      FROM orders o 
-      LEFT JOIN services s ON o.service_id = s.id 
-      LEFT JOIN merchants m ON s.merchant_id = m.id 
-      WHERE 1=1
-    `;
+    let sql = `SELECT o.*,
+    s.name AS server_name,
+    m.name AS merchant_name
+    FROM orders AS o
+    LEFT JOIN services AS s ON o.service_id = s.id 
+    LEFT JOIN merchants AS m ON s.merchant_id = m.id
+    WHERE 1=1`;
     let params = [];
-    
+
     if (status !== undefined) {
-      sql += ' AND o.status = ?';
+      sql += ` AND o.status=?`;
       params.push(status);
     }
-    
-    sql += ' ORDER BY o.create_time DESC';
-    
-    const [rows] = await pool.execute(sql, params);
-    res.json({ 
-      code: 200, 
-      data: rows 
+    //加一个空格
+    sql += ` ORDER BY o.create_time DESC`;
+
+    const [row] = await pool.execute(sql, params);
+    res.json({
+      code: 200,
+      message: "获取成功",
+      data: row,
     });
   } catch (err) {
-    res.json({ 
-      code: 500, 
-      msg: '获取订单列表失败', 
-      error: err.message 
+    res.json({
+      code: 500,
+      message: "获取失败",
+      error: err.message,
     });
   }
 };
 ```
 
 #### 3.8 订单路由 (routes/order.js)
+
 ```javascript
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const orderCtrl = require('../controllers/orderCtrl');
+const orderCtrl = require("../controllers/orderCtrl");
 
 // 创建订单
-router.post('/create', orderCtrl.createOrder);
+router.post("/create", orderCtrl.createOrder);
 
 // 获取订单列表
-router.get('/list', orderCtrl.getOrders);
+router.get("/list", orderCtrl.getOrders);
 
 module.exports = router;
 ```
 
-### 第4步：配置 package.json 脚本
+### 第 4 步：配置 package.json 脚本
+
 修改 `server/package.json` 中的 `scripts` 部分：
+
 ```json
 {
   "scripts": {
@@ -450,43 +594,53 @@ module.exports = router;
 }
 ```
 
-### 第5步：启动后端服务
+### 第 5 步：启动后端服务
+
 ```bash
 cd D:/life-service/server
 npm run dev
 ```
+
 看到 `✅ 后端服务启动成功！` 表示后端正常运行。
 
-### 第6步：测试后端API
+### 第 6 步：测试后端 API
+
 使用 Postman 或浏览器测试接口：
-- `GET http://localhost:3000/api/merchant/list` - 获取商家列表
-- `POST http://localhost:3000/api/merchant/add` - 新增商家
+
+- `GET http://localhost:8080/api/merchant/list` - 获取商家列表
+- `POST http://localhost:8080/api/merchant/add` - 新增商家
 
 ---
 
-## 🌐 阶段三：Web管理后台开发（3-4天）
+## 🌐 阶段三：Web 管理后台开发（3-4 天）
 
-### 第1步：创建Vue项目
-1. 打开新的cmd窗口：
+### 第 1 步：创建 Vue 项目
+
+1. 打开新的 cmd 窗口：
+
 ```bash
 cd D:/life-service
 vue create web-admin
 ```
 
 2. 选择配置：
+
    - `Vue 3`
    - `Babel`
    - `Router`
-   - 其他按回车用默认配置
+   - 其他按回车用默认配置（仔细看，别选错了）
 
 3. 进入项目并安装依赖：
+
 ```bash
 cd web-admin
 npm install axios
 ```
 
-### 第2步：项目结构配置
+### 第 2 步：项目结构配置
+
 在 `src` 文件夹中创建以下结构：
+
 ```
 src/
 ├── api/
@@ -505,115 +659,182 @@ src/
     └── index.js
 ```
 
-### 第3步：配置路由
+### 第 3 步：配置路由
+
 修改 `src/router/index.js`：
+
+- 这里路由说的详细一点，方便理解这个整体架构
+
 ```javascript
-import { createRouter, createWebHistory } from 'vue-router';
-import Merchant from '../views/Merchant/index.vue';
-import Service from '../views/Service/index.vue';
-import Order from '../views/Order/index.vue';
+// 1. 导入创建路由的工具
+
+import { createRouter, createWebHistory } from "vue-router";
+// createRouter：用来创建路由实例（相当于“接待员”本身）
+// createWebHistory：路由模式（用无#号的URL，比如 http://localhost:8080/service，更美观）
+
+// 2. 导入需要跳转的页面组件（“房间”本身）
+import Merchant from "../views/Merchant/index.vue";
+import Service from "../views/Service/index.vue";
+import Order from "../views/Order/index.vue";
+
+// 3. 定义“地址→页面”的对应规则（“房间号→房间”的对照表）
 
 const routes = [
-  { path: '/', redirect: '/merchant' },
-  { path: '/merchant', component: Merchant, name: '商家管理' },
-  { path: '/service', component: Service, name: '服务管理' },
-  { path: '/order', component: Order, name: '订单管理' }
+  {
+    path: "/",
+    redirect: "/merchant", // 核心：访问 "/" 时自动跳转到 "/merchant"
+  },
+  {
+    path: "/merchant", // 地址：网站根路径（http://localhost:8080/）
+    component: Merchant, // 对应页面：商家管理页
+    name: "商家管理", // 给这个路由起个名字（方便后续引用，可选）
+  },
+  {
+    path: "/service", // 地址：/service（http://localhost:8080/service）
+    name: "服务管理",
+    component: Service, // 对应页面：服务管理页
+  },
+  {
+    path: "/order", // 地址：/order（http://localhost:8080/order）
+    name: "订单管理",
+    component: Order, // 对应页面：订单管理页
+  },
 ];
 
+// 4. 创建路由实例（初始化“接待员”，告诉他规则和工作模式）
 const router = createRouter({
-  history: createWebHistory(),
-  routes
+  history: createWebHistory(), // 用无#号的URL模式
+  routes, // 刚才定义的“地址→页面”规则
 });
 
+// 5. 导出路由实例，让整个项目能用（把“接待员”安排到酒店工作）
 export default router;
 ```
 
-### 第4步：封装API请求
+### 第 4 步：封装 API 请求
+
 创建 `src/api/merchant.js`：
+
 ```javascript
-import axios from 'axios';
+import axios from "axios";
 
-// 配置基础路径
-axios.defaults.baseURL = 'http://localhost:3000/api';
+axios.defaults.baseURL = "http://localhost:8080";
 
-// 商家相关API
 export const merchantAPI = {
-  // 新增商家
-  addMerchant: (data) => {
-    return axios.post('/merchant/add', data);
+  addMerchant(merchant) {
+    return axios.post("/api/merchant/add", merchant);
   },
-  
-  // 获取商家列表
-  getMerchants: () => {
-    return axios.get('/merchant/list');
-  }
+
+  getMerchantList() {
+    return axios.get("/api/merchant/list");
+  },
+  // 审核商家
+  approveMerchant(id) {
+    return axios.put(`/api/merchant/approve/${id}`);
+  },
 };
 
 export default merchantAPI;
 ```
 
 创建 `src/api/service.js`：
+
 ```javascript
-import axios from 'axios';
+import axios from "axios";
 
 export const serviceAPI = {
-  // 获取服务列表
-  getServices: (category = '') => {
-    const params = category ? { category } : {};
-    return axios.get('/service/list', { params });
+  getServices: (category = "") => {
+    const params = {
+      ...(category ? { category } : {}),
+      t: Date.now(),
+    };
+    return axios.get("/api/service/list", { params });
   },
-  
-  // 新增服务
   addService: (data) => {
-    return axios.post('/service/add', data);
-  }
+    return axios.post("/api/service/add", data);
+  },
+  publishService: (id) => {
+    axios.put(`/api/service/publish/${id}`);
+  },
+  unpublishService: (id) => {
+    axios.put(`/api/service/unpublish/${id}`);
+  },
 };
 
 export default serviceAPI;
 ```
 
 创建 `src/api/order.js`：
+
 ```javascript
-import axios from 'axios';
+import axios from "axios";
 
 export const orderAPI = {
   // 获取订单列表
   getOrders: (status) => {
     const params = status !== undefined ? { status } : {};
-    return axios.get('/order/list', { params });
+    return axios.get("/order/list", { params });
   },
-  
+
   // 创建订单
   createOrder: (data) => {
-    return axios.post('/order/create', data);
-  }
+    return axios.post("/order/add", data);
+  },
 };
 
 export default orderAPI;
 ```
 
-### 第5步：开发商家管理页面
+### 第 5 步：开发商家管理页面
+
 创建 `src/views/Merchant/index.vue`：
+
 ```vue
 <template>
   <div class="merchant-page">
     <h2>🏪 商家管理</h2>
-    
+
     <!-- 新增商家表单 -->
     <div class="add-form">
       <h3>➕ 新增商家</h3>
       <div class="form-group">
-        <input v-model="newMerchant.name" placeholder="商家名称" class="input">
-        <input v-model="newMerchant.address" placeholder="商家地址" class="input">
-        <input v-model="newMerchant.phone" placeholder="联系电话" class="input">
-        <button @click="addMerchant" class="btn btn-primary">添加商家</button>
+        <input
+          v-model="newMerchant.name"
+          placeholder="商家名称"
+          class="input"
+          :disabled="isSubmitting"
+        />
+        <input
+          v-model="newMerchant.address"
+          placeholder="商家地址"
+          class="input"
+          :disabled="isSubmitting"
+        />
+        <input
+          v-model="newMerchant.phone"
+          placeholder="联系电话"
+          class="input"
+          :disabled="isSubmitting"
+        />
+        <button
+          @click="addMerchant"
+          class="btn btn-primary"
+          :disabled="isSubmitting"
+        >
+          {{ isSubmitting ? "提交中..." : "添加商家" }}
+        </button>
       </div>
     </div>
 
     <!-- 商家列表 -->
     <div class="merchant-list">
       <h3>📋 商家列表</h3>
-      <table class="table">
+      <!-- 加载状态 -->
+      <div class="loading" v-if="isLoading">
+        <span>加载中...</span>
+      </div>
+
+      <table class="table" v-else>
         <thead>
           <tr>
             <th>ID</th>
@@ -622,20 +843,46 @@ export default orderAPI;
             <th>电话</th>
             <th>状态</th>
             <th>创建时间</th>
+            <th>操作</th>
+            <!-- 新增操作列，更清晰 -->
           </tr>
         </thead>
         <tbody>
+          <!-- 空状态处理 -->
+          <tr v-if="merchants.length === 0">
+            <td colspan="7" class="empty-cell">暂无商家数据</td>
+          </tr>
+
           <tr v-for="merchant in merchants" :key="merchant.id">
             <td>{{ merchant.id }}</td>
             <td>{{ merchant.name }}</td>
             <td>{{ merchant.address }}</td>
             <td>{{ merchant.phone }}</td>
             <td>
-              <span :class="merchant.status === 0 ? 'status-pending' : 'status-approved'">
-                {{ merchant.status === 0 ? '审核中' : '已通过' }}
+              <span
+                :class="
+                  merchant.status === 0 ? 'status-pending' : 'status-approved'
+                "
+              >
+                {{ merchant.status === 0 ? "审核中" : "已通过" }}
               </span>
             </td>
             <td>{{ formatTime(merchant.create_time) }}</td>
+            <td class="operation-cell">
+              <!-- 审核按钮：只在"审核中"且非加载状态显示 -->
+              <button
+                class="approve-btn"
+                @click="handleApprove(merchant.id)"
+                v-if="merchant.status === 0 && !isLoading"
+                :disabled="isApproving[merchant.id]"
+              >
+                {{ isApproving[merchant.id] ? "审核中..." : "审核通过" }}
+              </button>
+              <!-- 已通过状态提示 -->
+              <span class="approved-text" v-else-if="merchant.status === 1">
+                已审核
+              </span>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -644,70 +891,128 @@ export default orderAPI;
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
-import merchantAPI from '../../api/merchant'
+import { ref, onMounted } from "vue";
+import merchantAPI from "../../api/merchant";
 
 export default {
-  name: 'MerchantView',
+  name: "MerchantView",
   setup() {
-    const merchants = ref([])
+    // 商家列表数据
+    const merchants = ref([]);
+    // 新增商家表单数据
     const newMerchant = ref({
-      name: '',
-      address: '', 
-      phone: ''
-    })
+      name: "",
+      address: "",
+      phone: "",
+    });
+    // 加载状态（列表加载中）
+    const isLoading = ref(false);
+    // 提交状态（新增商家时）
+    const isSubmitting = ref(false);
+    // 审核状态（针对每个商家的单独加载状态，避免重复点击）
+    const isApproving = ref({}); // 结构：{ 1: true, 2: false, ... }
 
-    // 获取商家列表
+    // 获取商家列表（封装为独立方法，便于复用）
     const getMerchants = async () => {
       try {
-        const response = await merchantAPI.getMerchants()
-        merchants.value = response.data.data
+        isLoading.value = true; // 显示加载状态
+        const response = await merchantAPI.getMerchantList();
+        merchants.value = response.data.data || []; // 兼容空数据
       } catch (error) {
-        alert('获取商家列表失败！')
-        console.error(error)
+        alert("获取商家列表失败：" + (error.message || "网络错误"));
+        console.error("商家列表加载失败：", error);
+      } finally {
+        isLoading.value = false; // 无论成功失败，关闭加载状态
       }
-    }
+    };
 
     // 新增商家
     const addMerchant = async () => {
-      if (!newMerchant.value.name || !newMerchant.value.address || !newMerchant.value.phone) {
-        alert('请填写完整信息！')
-        return
+      // 表单验证
+      if (!newMerchant.value.name.trim()) {
+        alert("请输入商家名称！");
+        return;
+      }
+      if (!newMerchant.value.address.trim()) {
+        alert("请输入商家地址！");
+        return;
+      }
+      if (!newMerchant.value.phone.trim()) {
+        alert("请输入联系电话！");
+        return;
+      }
+      // 简单手机号格式验证（11位数字）
+      if (!/^\d{11}$/.test(newMerchant.value.phone)) {
+        alert("请输入有效的11位手机号！");
+        return;
       }
 
       try {
-        await merchantAPI.addMerchant(newMerchant.value)
-        alert('商家添加成功！')
-        
+        isSubmitting.value = true; // 防止重复提交
+        await merchantAPI.addMerchant(newMerchant.value);
+        alert("商家添加成功！");
+
         // 清空表单
-        newMerchant.value = { name: '', address: '', phone: '' }
-        
+        newMerchant.value = { name: "", address: "", phone: "" };
+
         // 刷新列表
-        getMerchants()
+        getMerchants();
       } catch (error) {
-        alert('添加商家失败！')
-        console.error(error)
+        alert("添加商家失败：" + (error.message || "服务器错误"));
+        console.error("新增商家失败：", error);
+      } finally {
+        isSubmitting.value = false; // 恢复提交状态
       }
-    }
+    };
 
-    // 格式化时间
+    // 审核商家（核心补充）
+    const handleApprove = async (id) => {
+      // 确认操作（避免误点）
+      if (!confirm("确定要通过该商家的审核吗？")) {
+        return;
+      }
+
+      try {
+        // 标记当前商家正在审核中
+        isApproving.value[id] = true;
+
+        await merchantAPI.approveMerchant(id);
+        alert("商家审核通过！");
+
+        // 刷新列表
+        getMerchants();
+      } catch (error) {
+        alert("审核失败：" + (error.message || "服务器错误"));
+        console.error(`审核商家${id}失败：`, error);
+      } finally {
+        // 清除审核状态
+        isApproving.value[id] = false;
+      }
+    };
+
+    // 格式化时间（兼容空值）
     const formatTime = (timeString) => {
-      return new Date(timeString).toLocaleString()
-    }
+      if (!timeString) return "-";
+      return new Date(timeString).toLocaleString();
+    };
 
-    // 页面加载时获取数据
+    // 页面加载时初始化数据
     onMounted(() => {
-      getMerchants()
-    })
+      getMerchants();
+    });
 
     return {
       merchants,
       newMerchant,
+      isLoading,
+      isSubmitting,
+      isApproving,
       addMerchant,
-      formatTime
-    }
-  }
-}
+      handleApprove, // 导出审核方法（关键补充）
+      formatTime,
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -738,6 +1043,12 @@ export default {
   border-radius: 4px;
   flex: 1;
   min-width: 200px;
+  font-size: 14px;
+}
+
+.input:disabled {
+  background: #f0f0f0;
+  cursor: not-allowed;
 }
 
 .btn {
@@ -746,14 +1057,20 @@ export default {
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+  transition: background 0.3s;
+}
+
+.btn:disabled {
+  background: #9e9e9e;
+  cursor: not-allowed;
 }
 
 .btn-primary {
-  background: #4CAF50;
+  background: #4caf50;
   color: white;
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
   background: #45a049;
 }
 
@@ -766,10 +1083,11 @@ export default {
   border-collapse: collapse;
   margin-top: 10px;
   background: white;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.table th, .table td {
+.table th,
+.table td {
   border: 1px solid #ddd;
   padding: 12px;
   text-align: left;
@@ -778,8 +1096,18 @@ export default {
 .table th {
   background: #f5f5f5;
   font-weight: bold;
+  white-space: nowrap;
+  /* 表头不换行 */
 }
 
+/* 空状态单元格 */
+.empty-cell {
+  text-align: center;
+  padding: 40px 0;
+  color: #999;
+}
+
+/* 状态样式 */
 .status-pending {
   color: #ff9800;
   font-weight: bold;
@@ -789,11 +1117,52 @@ export default {
   color: #4caf50;
   font-weight: bold;
 }
+
+/* 操作列样式 */
+.operation-cell {
+  white-space: nowrap;
+  /* 操作按钮不换行 */
+}
+
+.approve-btn {
+  background: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.3s;
+}
+
+.approve-btn:hover:not(:disabled) {
+  background: #0b7dda;
+}
+
+.approve-btn:disabled {
+  background: #bbdefb;
+  cursor: not-allowed;
+}
+
+.approved-text {
+  color: #666;
+  font-size: 13px;
+}
+
+/* 加载状态 */
+.loading {
+  text-align: center;
+  padding: 40px 0;
+  color: #666;
+  font-size: 14px;
+}
 </style>
 ```
 
-### 第6步：修改App.vue
+### 第 6 步：修改 App.vue
+
 更新 `src/App.vue`：
+
 ```vue
 <template>
   <div id="app">
@@ -807,7 +1176,7 @@ export default {
         </div>
       </div>
     </nav>
-    
+
     <main class="main-content">
       <router-view />
     </main>
@@ -816,8 +1185,8 @@ export default {
 
 <script>
 export default {
-  name: 'App'
-}
+  name: "App",
+};
 </script>
 
 <style>
@@ -828,7 +1197,7 @@ export default {
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background: #f5f5f5;
 }
 
@@ -836,7 +1205,7 @@ body {
   background: #2c3e50;
   color: white;
   padding: 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .nav-container {
@@ -866,7 +1235,8 @@ body {
   transition: background 0.3s;
 }
 
-.nav-link:hover, .nav-link.router-link-active {
+.nav-link:hover,
+.nav-link.router-link-active {
   background: #34495e;
 }
 
@@ -877,33 +1247,53 @@ body {
 </style>
 ```
 
-### 第7步：开发服务管理页面
+### 第 7 步：开发服务管理页面
+
 创建 `src/views/Service/index.vue`：
+
 ```vue
 <template>
   <div class="service-page">
     <h2>🛎️ 服务管理</h2>
-    
+
     <!-- 新增服务表单 -->
     <div class="add-form">
       <h3>➕ 新增服务</h3>
       <div class="form-grid">
-        <input v-model="newService.name" placeholder="服务名称" class="input">
+        <input v-model="newService.name" placeholder="服务名称" class="input" />
         <select v-model="newService.merchant_id" class="input">
           <option value="">选择商家</option>
-          <option v-for="merchant in merchants" :key="merchant.id" :value="merchant.id">
+          <option
+            v-for="merchant in merchants"
+            :key="merchant.id"
+            :value="merchant.id"
+          >
             {{ merchant.name }}
           </option>
         </select>
-        <input v-model="newService.price" type="number" placeholder="价格" class="input">
+        <input
+          v-model="newService.price"
+          type="number"
+          placeholder="价格"
+          class="input"
+        />
         <select v-model="newService.category" class="input">
           <option value="">选择分类</option>
           <option value="家政">家政</option>
           <option value="维修">维修</option>
           <option value="保洁">保洁</option>
         </select>
-        <input v-model="newService.stock" type="number" placeholder="库存" class="input">
-        <input v-model="newService.image_url" placeholder="图片URL" class="input">
+        <input
+          v-model="newService.stock"
+          type="number"
+          placeholder="库存"
+          class="input"
+        />
+        <input
+          v-model="newService.image_url"
+          placeholder="图片URL"
+          class="input"
+        />
         <button @click="addService" class="btn btn-primary">添加服务</button>
       </div>
     </div>
@@ -921,6 +1311,8 @@ body {
             <th>分类</th>
             <th>库存</th>
             <th>状态</th>
+            <th>操作</th>
+            <!-- 新增操作列 -->
           </tr>
         </thead>
         <tbody>
@@ -933,8 +1325,26 @@ body {
             <td>{{ service.stock }}</td>
             <td>
               <span :class="service.status === 0 ? 'status-off' : 'status-on'">
-                {{ service.status === 0 ? '下架' : '上架' }}
+                {{ service.status === 0 ? "下架" : "上架" }}
               </span>
+            </td>
+            <td>
+              <!-- 上架按钮（下架状态时显示） -->
+              <button
+                v-if="service.status === 0"
+                class="btn btn-publish"
+                @click="handlePublish(service.id)"
+              >
+                上架
+              </button>
+              <!-- 下架按钮（上架状态时显示） -->
+              <button
+                v-else
+                class="btn btn-unpublish"
+                @click="handleUnpublish(service.id)"
+              >
+                下架
+              </button>
             </td>
           </tr>
         </tbody>
@@ -944,89 +1354,114 @@ body {
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
-import serviceAPI from '../../api/service'
-import merchantAPI from '../../api/merchant'
+import { ref, onMounted } from "vue";
+import serviceAPI from "../../api/service";
+import merchantAPI from "../../api/merchant";
 
 export default {
-  name: 'ServiceView',
+  name: "ServiceView",
   setup() {
-    const services = ref([])
-    const merchants = ref([])
+    const services = ref([]);
+    const merchants = ref([]);
     const newService = ref({
-      name: '',
-      merchant_id: '',
-      price: '',
-      category: '',
-      stock: '',
-      image_url: ''
-    })
+      name: "",
+      merchant_id: "",
+      price: "",
+      category: "",
+      stock: "",
+      image_url: "",
+    });
 
     // 获取服务列表
     const getServices = async () => {
       try {
-        const response = await serviceAPI.getServices()
-        services.value = response.data.data
+        const response = await serviceAPI.getServices();
+        services.value = response.data.data;
       } catch (error) {
-        alert('获取服务列表失败！')
-        console.error(error)
+        alert("获取服务列表失败！");
+        console.error(error);
       }
-    }
+    };
 
     // 获取商家列表
     const getMerchants = async () => {
       try {
-        const response = await merchantAPI.getMerchants()
-        merchants.value = response.data.data
+        const response = await merchantAPI.getMerchantList();
+        merchants.value = response.data.data;
       } catch (error) {
-        alert('获取商家列表失败！')
-        console.error(error)
+        alert("获取商家列表失败！");
+        console.error(error);
       }
-    }
+    };
 
     // 新增服务
     const addService = async () => {
-      if (!newService.value.name || !newService.value.merchant_id || !newService.value.price) {
-        alert('请填写完整信息！')
-        return
+      if (
+        !newService.value.name ||
+        !newService.value.merchant_id ||
+        !newService.value.price
+      ) {
+        alert("请填写完整信息！");
+        return;
       }
 
       try {
-        await serviceAPI.addService(newService.value)
-        alert('服务添加成功！')
-        
-        // 清空表单
+        await serviceAPI.addService(newService.value);
+        alert("服务添加成功！");
         newService.value = {
-          name: '',
-          merchant_id: '',
-          price: '',
-          category: '',
-          stock: '',
-          image_url: ''
-        }
-        
-        // 刷新列表
-        getServices()
+          name: "",
+          merchant_id: "",
+          price: "",
+          category: "",
+          stock: "",
+          image_url: "",
+        };
+        getServices();
       } catch (error) {
-        alert('添加服务失败！')
-        console.error(error)
+        alert("添加服务失败！");
+        console.error(error);
       }
-    }
+    };
 
-    // 页面加载时获取数据
+    // 上架服务（状态更新为1）
+    const handlePublish = async (id) => {
+      try {
+        await serviceAPI.publishService(id);
+        alert("服务上架成功！");
+        getServices(); // 刷新列表
+      } catch (error) {
+        alert("上架失败！");
+        console.error(error);
+      }
+    };
+
+    // 下架服务（状态更新为0）
+    const handleUnpublish = async (id) => {
+      try {
+        await serviceAPI.unpublishService(id);
+        alert("服务下架成功！");
+        getServices(); // 刷新列表
+      } catch (error) {
+        alert("下架失败！");
+        console.error(error);
+      }
+    };
+
     onMounted(() => {
-      getServices()
-      getMerchants()
-    })
+      getServices();
+      getMerchants();
+    });
 
     return {
       services,
       merchants,
       newService,
-      addService
-    }
-  }
-}
+      addService,
+      handlePublish, // 导出上架方法
+      handleUnpublish, // 导出下架方法
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -1064,17 +1499,37 @@ export default {
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+}
+
+.btn-primary {
+  background: #4caf50;
+  color: white;
   grid-column: 1 / -1;
   justify-self: start;
 }
 
-.btn-primary {
-  background: #4CAF50;
+.btn-primary:hover {
+  background: #45a049;
+}
+
+/* 上架按钮样式 */
+.btn-publish {
+  background: #2196f3;
   color: white;
 }
 
-.btn-primary:hover {
-  background: #45a049;
+.btn-publish:hover {
+  background: #0b7dda;
+}
+
+/* 下架按钮样式 */
+.btn-unpublish {
+  background: #ff9800;
+  color: white;
+}
+
+.btn-unpublish:hover {
+  background: #e68900;
 }
 
 .service-list {
@@ -1086,10 +1541,11 @@ export default {
   border-collapse: collapse;
   margin-top: 10px;
   background: white;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.table th, .table td {
+.table th,
+.table td {
   border: 1px solid #ddd;
   padding: 12px;
   text-align: left;
@@ -1112,25 +1568,27 @@ export default {
 </style>
 ```
 
-### 第8步：开发订单管理页面
+### 第 8 步：开发订单管理页面
+
 创建 `src/views/Order/index.vue`：
+
 ```vue
 <template>
   <div class="order-page">
     <h2>📦 订单管理</h2>
-    
+
     <!-- 筛选条件 -->
     <div class="filter-section">
       <h3>筛选条件</h3>
       <div class="filter-group">
         <label>
-          <input type="radio" v-model="filterStatus" value=""> 全部订单
+          <input type="radio" v-model="filterStatus" value="" /> 全部订单
         </label>
         <label>
-          <input type="radio" v-model="filterStatus" value="0"> 待支付
+          <input type="radio" v-model="filterStatus" value="0" /> 待支付
         </label>
         <label>
-          <input type="radio" v-model="filterStatus" value="1"> 已完成
+          <input type="radio" v-model="filterStatus" value="1" /> 已完成
         </label>
       </div>
     </div>
@@ -1160,8 +1618,12 @@ export default {
             <td>{{ order.user_phone }}</td>
             <td>¥{{ order.price }}</td>
             <td>
-              <span :class="order.status === 0 ? 'status-pending' : 'status-completed'">
-                {{ order.status === 0 ? '待支付' : '已完成' }}
+              <span
+                :class="
+                  order.status === 0 ? 'status-pending' : 'status-completed'
+                "
+              >
+                {{ order.status === 0 ? "待支付" : "已完成" }}
               </span>
             </td>
             <td>{{ formatTime(order.create_time) }}</td>
@@ -1173,48 +1635,48 @@ export default {
 </template>
 
 <script>
-import { ref, onMounted, watch } from 'vue'
-import orderAPI from '../../api/order'
+import { ref, onMounted, watch } from "vue";
+import orderAPI from "../../api/order";
 
 export default {
-  name: 'OrderView',
+  name: "OrderView",
   setup() {
-    const orders = ref([])
-    const filterStatus = ref('')
+    const orders = ref([]);
+    const filterStatus = ref("");
 
     // 获取订单列表
-    const getOrders = async (status = '') => {
+    const getOrders = async (status = "") => {
       try {
-        const response = await orderAPI.getOrders(status)
-        orders.value = response.data.data
+        const response = await orderAPI.getOrders(status);
+        orders.value = response.data.data;
       } catch (error) {
-        alert('获取订单列表失败！')
-        console.error(error)
+        alert("获取订单列表失败！");
+        console.error(error);
       }
-    }
+    };
 
     // 格式化时间
     const formatTime = (timeString) => {
-      return new Date(timeString).toLocaleString()
-    }
+      return new Date(timeString).toLocaleString();
+    };
 
     // 监听筛选条件变化
     watch(filterStatus, (newStatus) => {
-      getOrders(newStatus)
-    })
+      getOrders(newStatus);
+    });
 
     // 页面加载时获取数据
     onMounted(() => {
-      getOrders()
-    })
+      getOrders();
+    });
 
     return {
       orders,
       filterStatus,
-      formatTime
-    }
-  }
-}
+      formatTime,
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -1254,10 +1716,11 @@ export default {
   border-collapse: collapse;
   margin-top: 10px;
   background: white;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.table th, .table td {
+.table th,
+.table td {
   border: 1px solid #ddd;
   padding: 12px;
   text-align: left;
@@ -1280,18 +1743,24 @@ export default {
 </style>
 ```
 
-### 第9步：启动Web管理后台
+### 第 9 步：启动 Web 管理后台
+
+- 注意此时，还有前后端跨域问题（用 cores 或者 nginx 代理解决）
+- PS（我会在后续的文章中解决）
+
 ```bash
 cd D:/life-service/web-admin
 npm run serve
 ```
+
 访问：http://localhost:8080
 
 ---
 
-## 📱 阶段四：微信小程序开发（3-4天）
+## 📱 阶段四：微信小程序开发（3-4 天）
 
-### 第1步：创建小程序项目
+### 第 1 步：创建小程序项目
+
 1. 打开微信开发者工具
 2. 点击"新建项目"
 3. 填写信息：
@@ -1301,8 +1770,10 @@ npm run serve
    - 后端服务：不使用云服务
 4. 点击"新建"
 
-### 第2步：项目结构配置
+### 第 2 步：项目结构配置
+
 在小程序项目中创建以下结构：
+
 ```
 mini-user/
 ├── pages/
@@ -1316,34 +1787,38 @@ mini-user/
 └── app.js（小程序入口）
 ```
 
-### 第3步：封装网络请求
+### 第 3 步：封装网络请求
+
 创建 `utils/request.js`：
+
 ```javascript
-const request = (url, method = 'GET', data = {}) => {
+const request = (url, method = "GET", data = {}) => {
   return new Promise((resolve, reject) => {
     wx.request({
-      url: 'http://localhost:3000/api' + url,
+      url: "http://localhost:8080/api" + url,
       method,
       data,
       success: (res) => {
         if (res.data.code === 200) {
-          resolve(res.data.data)
+          resolve(res.data.data);
         } else {
-          reject(res.data.msg)
+          reject(res.data.msg);
         }
       },
       fail: (err) => {
-        reject('网络请求失败：' + err.errMsg)
-      }
-    })
-  })
-}
+        reject("网络请求失败：" + err.errMsg);
+      },
+    });
+  });
+};
 
-module.exports = request
+module.exports = request;
 ```
 
-### 第4步：配置小程序页面
+### 第 4 步：配置小程序页面
+
 修改 `app.json`：
+
 ```json
 {
   "pages": [
@@ -1363,59 +1838,62 @@ module.exports = request
 }
 ```
 
-### 第5步：开发首页
+### 第 5 步：开发首页
+
 创建 `pages/index/index.js`：
+
 ```javascript
-const request = require('../../utils/request')
+const request = require("../../utils/request");
 
 Page({
   data: {
     services: [],
     categories: [
-      { name: '家政', icon: '🏠', type: '家政' },
-      { name: '维修', icon: '🔧', type: '维修' },
-      { name: '保洁', icon: '✨', type: '保洁' }
-    ]
+      { name: "家政", icon: "🏠", type: "家政" },
+      { name: "维修", icon: "🔧", type: "维修" },
+      { name: "保洁", icon: "✨", type: "保洁" },
+    ],
   },
 
   onLoad() {
-    this.getServices()
+    this.getServices();
   },
 
   // 获取推荐服务
   async getServices() {
     try {
-      const services = await request('/service/list')
+      const services = await request("/service/list");
       // 只取前4个作为推荐
-      this.setData({ 
-        services: services.slice(0, 4) 
-      })
+      this.setData({
+        services: services.slice(0, 4),
+      });
     } catch (err) {
       wx.showToast({
-        title: '加载失败',
-        icon: 'none'
-      })
+        title: "加载失败",
+        icon: "none",
+      });
     }
   },
 
   // 跳转到服务列表
   toServiceList(e) {
-    const type = e.currentTarget.dataset.type
+    const type = e.currentTarget.dataset.type;
     wx.navigateTo({
-      url: `/pages/serviceList/serviceList?type=${type}`
-    })
+      url: `/pages/serviceList/serviceList?type=${type}`,
+    });
   },
 
   // 跳转到订单列表
   toOrderList() {
     wx.navigateTo({
-      url: '/pages/orderList/orderList'
-    })
-  }
-})
+      url: "/pages/orderList/orderList",
+    });
+  },
+});
 ```
 
 创建 `pages/index/index.wxml`：
+
 ```xml
 <view class="container">
   <!-- 头部 -->
@@ -1428,9 +1906,9 @@ Page({
   <view class="category-section">
     <view class="section-title">服务分类</view>
     <view class="category-grid">
-      <view 
-        class="category-item" 
-        wx:for="{{categories}}" 
+      <view
+        class="category-item"
+        wx:for="{{categories}}"
         wx:key="type"
         bindtap="toServiceList"
         data-type="{{item.type}}"
@@ -1439,7 +1917,7 @@ Page({
         <text class="category-name">{{item.name}}</text>
       </view>
     </view>
-  </div>
+  </view>
 
   <!-- 推荐服务 -->
   <view class="recommend-section">
@@ -1448,9 +1926,9 @@ Page({
       <text class="more" bindtap="toServiceList" data-type="">查看更多</text>
     </view>
     <view class="service-grid">
-      <view 
-        class="service-card" 
-        wx:for="{{services}}" 
+      <view
+        class="service-card"
+        wx:for="{{services}}"
         wx:key="id"
         bindtap="toOrderCreate"
         data-service="{{item}}"
@@ -1480,9 +1958,11 @@ Page({
     </view>
   </view>
 </view>
+
 ```
 
 创建 `pages/index/index.wxss`：
+
 ```css
 .container {
   padding: 20rpx;
@@ -1529,7 +2009,7 @@ Page({
   background: white;
   padding: 30rpx;
   border-radius: 20rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.1);
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
 }
 
 .category-item {
@@ -1575,7 +2055,7 @@ Page({
   background: white;
   border-radius: 20rpx;
   overflow: hidden;
-  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.1);
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
 }
 
 .service-image {
@@ -1632,7 +2112,7 @@ Page({
   background: white;
   display: flex;
   padding: 20rpx;
-  box-shadow: 0 -2rpx 20rpx rgba(0,0,0,0.1);
+  box-shadow: 0 -2rpx 20rpx rgba(0, 0, 0, 0.1);
 }
 
 .nav-item {
@@ -1653,105 +2133,100 @@ Page({
 }
 ```
 
-### 第6步：开发服务列表页面
+### 第 6 步：开发服务列表页面
+
 创建 `pages/serviceList/serviceList.js`：
+
 ```javascript
-const request = require('../../utils/request')
+const request = require("../../utils/request");
 
 Page({
   data: {
     services: [],
-    categories: ['全部', '家政', '维修', '保洁'],
-    activeCategory: '全部',
-    searchKeyword: ''
+    categories: ["全部", "家政", "维修", "保洁"],
+    activeCategory: "全部",
+    searchKeyword: "",
   },
 
   onLoad(options) {
     if (options.type) {
-      this.setData({ activeCategory: options.type })
+      this.setData({ activeCategory: options.type });
     }
-    this.getServices()
+    this.getServices();
   },
 
   // 获取服务列表
   async getServices() {
-    const { activeCategory, searchKeyword } = this.data
-    
+    const { activeCategory, searchKeyword } = this.data;
+
     try {
-      let category = activeCategory === '全部' ? '' : activeCategory
-      let services = await request('/service/list', 'GET', { category })
-      
+      let category = activeCategory === "全部" ? "" : activeCategory;
+      let services = await request("/service/list", "GET", { category });
+
       // 前端搜索过滤
       if (searchKeyword) {
-        services = services.filter(service => 
-          service.name.includes(searchKeyword) || 
-          service.merchant_name.includes(searchKeyword)
-        )
+        services = services.filter(
+          (service) =>
+            service.name.includes(searchKeyword) ||
+            service.merchant_name.includes(searchKeyword)
+        );
       }
-      
-      this.setData({ services })
+
+      this.setData({ services });
     } catch (err) {
       wx.showToast({
-        title: '加载失败',
-        icon: 'none'
-      })
+        title: "加载失败",
+        icon: "none",
+      });
     }
   },
 
   // 切换分类
   switchCategory(e) {
-    const category = e.currentTarget.dataset.category
-    this.setData({ 
+    const category = e.currentTarget.dataset.category;
+    this.setData({
       activeCategory: category,
-      searchKeyword: ''
-    })
-    this.getServices()
+      searchKeyword: "",
+    });
+    this.getServices();
   },
 
   // 搜索输入
   onSearchInput(e) {
-    this.setData({ searchKeyword: e.detail.value })
+    this.setData({ searchKeyword: e.detail.value });
   },
 
   // 执行搜索
   onSearch() {
-    this.getServices()
+    this.getServices();
   },
 
-  // 跳转到下单页面
+  // 跳转到下单页面（修改后）
   toOrderCreate(e) {
-    const service = e.currentTarget.dataset.service
+    const service = e.currentTarget.dataset.service;
     wx.navigateTo({
-      url: `/pages/orderCreate/orderCreate?service=${JSON.stringify(service)}`
-    })
-  }
-})
+      url: `/pages/orderCreate/orderCreate?service=${encodeURIComponent(
+        JSON.stringify(service)
+      )}`,
+    });
+  },
+});
 ```
 
 创建 `pages/serviceList/serviceList.wxml`：
+
 ```xml
 <view class="container">
   <!-- 搜索框 -->
   <view class="search-box">
-    <input 
-      class="search-input" 
-      placeholder="搜索服务或商家..." 
-      value="{{searchKeyword}}"
-      bindinput="onSearchInput"
-    />
+    <input class="search-input" placeholder="搜索服务或商家..." value="{{searchKeyword}}" bindinput="onSearchInput" />
     <button class="search-btn" bindtap="onSearch">搜索</button>
   </view>
 
   <!-- 分类筛选 -->
   <scroll-view class="category-scroll" scroll-x>
     <view class="category-list">
-      <view 
-        class="category-item {{activeCategory === item ? 'active' : ''}}"
-        wx:for="{{categories}}"
-        wx:key="*this"
-        bindtap="switchCategory"
-        data-category="{{item}}"
-      >
+      <view class="category-item {{activeCategory === item ? 'active' : ''}}" wx:for="{{categories}}" wx:key="*this" bindtap="switchCategory" data-category="{{item}}">
         {{item}}
       </view>
     </view>
@@ -1759,13 +2234,7 @@ Page({
 
   <!-- 服务列表 -->
   <view class="service-list">
-    <view 
-      class="service-item" 
-      wx:for="{{services}}" 
-      wx:key="id"
-      bindtap="toOrderCreate"
-      data-service="{{item}}"
-    >
+    <view class="service-item" wx:for="{{services}}" wx:key="id" bindtap="toOrderCreate" data-service="{{item}}">
       <image class="service-image" src="{{item.image_url || '/images/default-service.png'}}"></image>
       <view class="service-content">
         <view class="service-header">
@@ -1789,6 +2258,7 @@ Page({
 ```
 
 创建 `pages/serviceList/serviceList.wxss`：
+
 ```css
 .container {
   padding: 20rpx;
@@ -1857,7 +2327,7 @@ Page({
   background: white;
   border-radius: 20rpx;
   overflow: hidden;
-  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.1);
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
 }
 
 .service-image {
@@ -1932,162 +2402,179 @@ Page({
 }
 ```
 
-### 第7步：开发创建订单页面
+### 第 7 步：开发创建订单页面
+
 创建 `pages/orderCreate/orderCreate.js`：
+
 ```javascript
-const request = require('../../utils/request')
+const request = require("../../utils/request");
 
 Page({
   data: {
     service: null,
     userInfo: {
-      name: '',
-      phone: ''
-    }
+      name: "",
+      phone: "",
+    },
   },
 
   onLoad(options) {
     if (options.service) {
-      const service = JSON.parse(options.service)
-      this.setData({ service })
+      try {
+        const serviceStr = decodeURIComponent(options.service);
+        const service = JSON.parse(serviceStr);
+        this.setData({ service });
+      } catch (err) {
+        // 3. 捕获解析错误，避免页面崩溃并提示用户
+        console.error("服务信息解析失败：", err);
+        wx.showToast({
+          title: "服务信息错误",
+          icon: "none",
+          duration: 2000,
+        });
+        // 解析失败时返回上一页
+        setTimeout(() => {
+          wx.navigateBack();
+        }, 2000);
+      }
+    } else {
+      // 没有传递 service 参数时的提示
+      wx.showToast({
+        title: "未获取到服务信息",
+        icon: "none",
+        duration: 2000,
+      });
+      setTimeout(() => {
+        wx.navigateBack();
+      }, 2000);
     }
   },
 
   // 输入用户姓名
   onNameInput(e) {
     this.setData({
-      'userInfo.name': e.detail.value
-    })
+      "userInfo.name": e.detail.value,
+    });
   },
 
   // 输入用户电话
   onPhoneInput(e) {
     this.setData({
-      'userInfo.phone': e.detail.value
-    })
+      "userInfo.phone": e.detail.value,
+    });
   },
 
   // 提交订单
   async submitOrder() {
-    const { service, userInfo } = this.data
-    
+    const { service, userInfo } = this.data;
+
     if (!userInfo.name.trim()) {
       wx.showToast({
-        title: '请输入姓名',
-        icon: 'none'
-      })
-      return
+        title: "请输入姓名",
+        icon: "none",
+      });
+      return;
     }
 
     if (!userInfo.phone.trim()) {
       wx.showToast({
-        title: '请输入手机号',
-        icon: 'none'
-      })
-      return
+        title: "请输入手机号",
+        icon: "none",
+      });
+      return;
     }
 
     // 简单的手机号验证
-    const phoneRegex = /^1[3-9]\d{9}$/
+    const phoneRegex = /^1[3-9]\d{9}$/;
     if (!phoneRegex.test(userInfo.phone)) {
       wx.showToast({
-        title: '请输入正确的手机号',
-        icon: 'none'
-      })
-      return
+        title: "请输入正确的手机号",
+        icon: "none",
+      });
+      return;
     }
 
     try {
       wx.showLoading({
-        title: '提交中...'
-      })
+        title: "提交中...",
+      });
 
-      await request('/order/create', 'POST', {
+      await request("/order/create", "POST", {
         service_id: service.id,
         user_name: userInfo.name,
-        user_phone: userInfo.phone
-      })
+        user_phone: userInfo.phone,
+      });
 
-      wx.hideLoading()
-      
+      wx.hideLoading();
+
       wx.showToast({
-        title: '订单创建成功！',
-        icon: 'success',
-        duration: 2000
-      })
+        title: "订单创建成功！",
+        icon: "success",
+        duration: 2000,
+      });
 
       // 跳转到订单列表
       setTimeout(() => {
         wx.navigateTo({
-          url: '/pages/orderList/orderList'
-        })
-      }, 2000)
-
+          url: "/pages/orderList/orderList",
+        });
+      }, 2000);
     } catch (err) {
-      wx.hideLoading()
+      wx.hideLoading();
       wx.showToast({
-        title: '订单创建失败',
-        icon: 'none'
-      })
+        title: "订单创建失败",
+        icon: "none",
+      });
     }
-  }
-})
+  },
+});
 ```
 
 创建 `pages/orderCreate/orderCreate.wxml`：
+
 ```xml
 <view class="container">
-  <!-- 服务信息 -->
-  <view class="service-card" wx:if="{{service}}">
-    <view class="card-title">服务信息</view>
-    <view class="service-info">
-      <image class="service-image" src="{{service.image_url || '/images/default-service.png'}}"></image>
-      <view class="service-details">
-        <text class="service-name">{{service.name}}</text>
-        <text class="service-merchant">{{service.merchant_name}}</text>
-        <text class="service-price">¥{{service.price}}</text>
-      </view>
-    </view>
-  </view>
+	<!-- 服务信息 -->
+	<view class="service-card" wx:if="{{service}}">
+		<view class="card-title">服务信息</view>
+		<view class="service-info">
+			<image class="service-image" src="{{service.image_url || '/images/default-service.png'}}"></image>
+			<view class="service-details">
+				<text class="service-name">{{service.name}}</text>
+				<text class="service-merchant">{{service.merchant_name}}</text>
+				<text class="service-price">¥{{service.price}}</text>
+			</view>
+		</view>
+	</view>
 
-  <!-- 用户信息表单 -->
-  <view class="form-card">
-    <view class="card-title">填写订单信息</view>
-    
-    <view class="form-item">
-      <text class="form-label">姓名</text>
-      <input 
-        class="form-input" 
-        placeholder="请输入您的姓名" 
-        value="{{userInfo.name}}"
-        bindinput="onNameInput"
-      />
-    </view>
+	<!-- 用户信息表单 -->
+	<view class="form-card">
+		<view class="card-title">填写订单信息</view>
 
-    <view class="form-item">
-      <text class="form-label">手机号</text>
-      <input 
-        class="form-input" 
-        placeholder="请输入您的手机号" 
-        type="number"
-        value="{{userInfo.phone}}"
-        bindinput="onPhoneInput"
-      />
-    </view>
-  </view>
+		<view class="form-item">
+			<text class="form-label">姓名</text>
+			<input class="form-input" placeholder="请输入您的姓名" value="{{userInfo.name}}" bindinput="onNameInput" />
+		</view>
 
-  <!-- 提交按钮 -->
-  <view class="submit-section">
-    <view class="price-display">
-      <text class="price-label">总计：</text>
-      <text class="price-amount">¥{{service ? service.price : '0'}}</text>
-    </view>
-    <button class="submit-btn" bindtap="submitOrder">立即下单</button>
-  </view>
+		<view class="form-item">
+			<text class="form-label">手机号</text>
+			<input class="form-input" placeholder="请输入您的手机号" type="number" value="{{userInfo.phone}}" bindinput="onPhoneInput" />
+		</view>
+	</view>
+
+	<!-- 提交按钮 -->
+	<view class="submit-section">
+		<view class="price-display">
+			<text class="price-label">总计：</text>
+			<text class="price-amount">¥{{service ? service.price : '0'}}</text>
+		</view>
+		<button class="submit-btn" bindtap="submitOrder">立即下单</button>
+	</view>
 </view>
 ```
 
 创建 `pages/orderCreate/orderCreate.wxss`：
+
 ```css
 .container {
   padding: 20rpx;
@@ -2097,12 +2584,13 @@ Page({
 }
 
 /* 卡片样式 */
-.service-card, .form-card {
+.service-card,
+.form-card {
   background: white;
   border-radius: 20rpx;
   padding: 30rpx;
   margin-bottom: 20rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.1);
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
 }
 
 .card-title {
@@ -2184,7 +2672,7 @@ Page({
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 -2rpx 20rpx rgba(0,0,0,0.1);
+  box-shadow: 0 -2rpx 20rpx rgba(0, 0, 0, 0.1);
 }
 
 .price-display {
@@ -2215,84 +2703,93 @@ Page({
 }
 ```
 
-### 第8步：开发订单列表页面
+### 第 8 步：开发订单列表页面
+
 创建 `pages/orderList/orderList.js`：
+
 ```javascript
-const request = require('../../utils/request')
+const request = require("../../utils/request");
 
 Page({
   data: {
-    orders: []
+    orders: [],
   },
 
   onLoad() {
-    this.getOrders()
+    this.getOrders();
   },
 
   onShow() {
-    this.getOrders()
+    this.getOrders();
   },
 
   // 获取订单列表
   async getOrders() {
     try {
-      const orders = await request('/order/list')
-      this.setData({ orders })
+      const orders = await request("/order/list");
+      this.setData({ orders });
     } catch (err) {
       wx.showToast({
-        title: '加载失败',
-        icon: 'none'
-      })
+        title: "加载失败",
+        icon: "none",
+      });
     }
   },
 
   // 格式化时间
   formatTime(timeString) {
-    const date = new Date(timeString)
-    return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
-  }
-})
+    const date = new Date(timeString);
+    return `${date.getFullYear()}-${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")} ${date
+      .getHours()
+      .toString()
+      .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
+  },
+});
 ```
 
 创建 `pages/orderList/orderList.wxml`：
+
 ```xml
 <view class="container">
-  <view class="header">
-    <text class="title">我的订单</text>
-  </view>
+	<view class="header">
+		<text class="title">我的订单</text>
+	</view>
 
-  <view class="order-list">
-    <view class="order-item" wx:for="{{orders}}" wx:key="id">
-      <view class="order-header">
-        <text class="order-no">订单号: {{item.id}}</text>
-        <text class="order-status {{item.status === 0 ? 'pending' : 'completed'}}">
-          {{item.status === 0 ? '待支付' : '已完成'}}
-        </text>
-      </view>
-      
-      <view class="order-content">
-        <view class="service-info">
-          <text class="service-name">{{item.service_name}}</text>
-          <text class="merchant-name">{{item.merchant_name}}</text>
-        </view>
-        <text class="service-price">¥{{item.price}}</text>
-      </view>
+	<view class="order-list">
+		<view class="order-item" wx:for="{{orders}}" wx:key="id">
+			<view class="order-header">
+				<text class="order-no">订单号: {{item.id}}</text>
+				<text class="order-status {{item.status === 0 ? 'pending' : 'completed'}}">
+					{{item.status === 0 ? '待支付' : '已完成'}}
+				</text>
+			</view>
 
-      <view class="order-footer">
-        <text class="user-info">{{item.user_name}} · {{item.user_phone}}</text>
-        <text class="order-time">{{formatTime(item.create_time)}}</text>
-      </view>
-    </view>
-  </view>
+			<view class="order-content">
+				<view class="service-info">
+					<text class="service-name">{{item.service_name}}</text>
+					<text class="merchant-name">{{item.merchant_name}}</text>
+				</view>
+				<text class="service-price">¥{{item.price}}</text>
+			</view>
 
-  <view class="empty-state" wx:if="{{orders.length === 0}}">
-    <text class="empty-text">暂无订单</text>
-    <text class="empty-desc">去首页看看有什么服务吧</text>
-  </view>
+			<view class="order-footer">
+				<text class="user-info">{{item.user_name}} · {{item.user_phone}}</text>
+				<text class="order-time">{{formatTime(item.create_time)}}</text>
+			</view>
+		</view>
+	</view>
+
+	<view class="empty-state" wx:if="{{orders.length === 0}}">
+		<text class="empty-text">暂无订单</text>
+		<text class="empty-desc">去首页看看有什么服务吧</text>
+	</view>
 </view>
 ```
 
 创建 `pages/orderList/orderList.wxss`：
+
 ```css
 .container {
   padding: 20rpx;
@@ -2321,7 +2818,7 @@ Page({
   background: white;
   border-radius: 20rpx;
   padding: 30rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.1);
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
 }
 
 .order-header {
@@ -2422,70 +2919,81 @@ Page({
 }
 ```
 
-### 第9步：配置小程序入口
+### 第 9 步：配置小程序入口
+
 修改 `app.js`：
+
 ```javascript
 App({
   onLaunch() {
-    console.log('小程序启动')
+    console.log("小程序启动");
   },
-  
+
   globalData: {
-    userInfo: null
-  }
-})
+    userInfo: null,
+  },
+});
 ```
 
 ---
 
 ## 🧪 阶段五：集成测试与上线
 
-### 第1步：完整流程测试
+### 第 1 步：完整流程测试
 
 #### 测试流程：
+
 1. **启动所有服务**：
+
    ```bash
    # 终端1 - 后端
    cd D:/life-service/server
    npm run dev
 
    # 终端2 - 前端
-   cd D:/life-service/web-admin  
+   cd D:/life-service/web-admin
    npm run serve
    ```
 
-2. **在DataGrip中监控数据**：
+2. **在 DataGrip 中监控数据**：
+
    - 实时查看表数据变化
    - 验证外键关系
 
 3. **测试完整业务流程**：
-   - Web端：添加商家 → 添加服务
+   - Web 端：添加商家 → 添加服务
    - 小程序：浏览服务 → 下单
-   - Web端：查看订单
+   - Web 端：查看订单
 
-### 第2步：代码优化
+### 第 2 步：代码优化
 
 #### 后端优化：
+
 1. 添加参数验证
 2. 错误处理完善
 3. 添加日志记录
 
 #### 前端优化：
+
 1. 加载状态提示
 2. 错误边界处理
 3. 表单验证加强
 
-### 第3步：部署准备
+### 第 3 步：部署准备
 
 #### 整理项目文档：
+
 创建 `README.md`：
+
 ```markdown
 # 全域生活服务平台
 
 ## 项目介绍
-一个完整的生活服务平台，包含Web管理后台和微信小程序。
+
+一个完整的生活服务平台，包含 Web 管理后台和微信小程序。
 
 ## 技术栈
+
 - 后端：Node.js + Express + MySQL
 - 前端：Vue 3 + Vue Router
 - 小程序：微信小程序原生开发
@@ -2495,22 +3003,26 @@ App({
 ## 启动步骤
 
 ### 后端
+
 1. cd server
 2. npm install
 3. 修改 db/index.js 中的数据库密码
 4. npm run dev
 
-### Web管理后台
-1. cd web-admin  
+### Web 管理后台
+
+1. cd web-admin
 2. npm install
 3. npm run serve
 
 ### 小程序
+
 1. 微信开发者工具中打开 mini-user 文件夹
 2. 点击预览
 ```
 
-### 第4步：Git版本控制
+### 第 4 步：Git 版本控制
+
 ```bash
 # 初始化Git
 cd D:/life-service
@@ -2527,25 +3039,37 @@ git remote add origin 你的仓库地址
 git push -u origin main
 ```
 
+- 后续的更新统管理
+
+```bash
+git init
+git add .
+git commit -m "update"
+
+```
+
 ---
 
 ## 🎉 项目完成！
 
 ### 你已掌握的技能：
+
 ✅ **全栈开发**：前端 + 后端 + 数据库  
 ✅ **多端开发**：Web + 微信小程序  
-✅ **数据库设计**：MySQL表设计与关系  
-✅ **API开发**：RESTful接口设计  
-✅ **工具使用**：DataGrip数据库管理  
+✅ **数据库设计**：MySQL 表设计与关系  
+✅ **API 开发**：RESTful 接口设计  
+✅ **工具使用**：DataGrip 数据库管理
 
 ### 面试亮点：
+
 - "独立完成从数据库设计到前后端开发的全流程"
-- "掌握Vue + Node.js + MySQL技术栈整合"
+- "掌握 Vue + Node.js + MySQL 技术栈整合"
 - "具备多端开发能力（Web + 小程序）"
-- "使用DataGrip进行专业的数据库管理"
+- "使用 DataGrip 进行专业的数据库管理"
 
 ### 下一步建议：
+
 1. **功能扩展**：添加用户登录、支付功能
 2. **性能优化**：添加缓存、分页查询
 3. **部署上线**：购买云服务器部署项目
-4. **持续学习**：学习TypeScript、Docker等进阶技术
+4. **持续学习**：学习 TypeScript、Docker 等进阶技术
