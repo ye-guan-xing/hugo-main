@@ -1,7 +1,7 @@
 ---
 draft: false
 date: 2025-11-29 22:36:00 +0800
-title: "跨域问题讲解：CORS与反向代理实战"
+title: "跨域问题讲解"
 categories: ["web开发"]
 tags: ["项目开发", "全栈开发", "跨域", "Nginx"]
 ---
