@@ -1,6 +1,6 @@
 ---
 draft: false
-date: 2025-12-05 17:36:00 +08:00 
+date: 2025-12-05 17:36:00 +08:00
 title: "校园OJ项目的整体结构"
 categories: ["校园OJ开发", "web开发"]
 tags: ["前端开发"]
@@ -17,68 +17,74 @@ tags: ["前端开发"]
 下面是校园 OJ 平台前端项目的完整目录结构，这个结构体现了现代 Vue 项目的模块化设计思想：
 
 ```tree
-src/
-├── api/                     # 接口请求封装目录（与后端交互）
-│   ├── admin.js             # 管理员相关接口（登录、权限、题目管理等）
-│   ├── problem.js           # 题目相关接口（列表、详情、增改等）
-│   ├── submission.js        # 提交记录相关接口（提交代码、历史、结果等）
-│   └── users.js             # 用户相关接口（注册、登录、信息等）
-├── assets/                  # 静态资源目录（样式、图片等）
-│   ├── css/
-│   │   └── login.css        # 登录页面专属样式文件
-│   ├── images/              # 图片资源存放目录
-│   └── styles/
-│       ├── common.scss      # 全局通用样式
-│       └── variables.scss   # 样式变量（颜色、尺寸等）
-├── components/              # 公共组件目录（可复用）
-│   ├── admin/
-│   │   ├── ProblemForm.vue  # 管理员端题目表单组件（新增/编辑题目）
-│   │   └── ProblemManagement.vue # 管理员端题目管理组件（列表、操作）
-│   ├── common/
-│   │   ├── AppFooter.vue    # 全局页脚组件
-│   │   └── AppNavbar.vue    # 全局导航栏组件
-│   ├── problem/
-│   │   ├── ProblemDetail.vue # 题目详情展示组件
-│   │   ├── ProblemItem.vue  # 题目列表项组件（单个题目展示）
-│   │   └── ProblemTags.vue  # 题目标签组件（展示/选择标签）
-│   └── submission/
-│       ├── CodeEditor.vue   # 代码编辑器组件（提交代码用）
-│       ├── SubmissionItem.vue # 提交记录项组件（单个提交展示）
-│       └── SubmissionList.vue # 提交记录列表组件
-├── layouts/                 # 布局组件目录
-│   └── MainLayout.vue       # 主布局组件（包含导航、页脚，包裹页面内容）
-├── router/                  # 路由配置目录
-│   ├── index.js             # 路由入口（创建路由实例、挂载等）
-│   └── routes.js            # 路由规则定义（页面路由映射）
-├── store/                   # Vuex状态管理目录
-│   ├── modules/
-│   │   ├── problem.js       # 题目相关状态管理（数据、操作）
-│   │   ├── submission.js    # 提交相关状态管理（数据、操作）
-│   │   └── user.js          # 用户相关状态管理（登录态、信息等）
-│   ├── getters.js           # Vuex全局计算属性（公共状态获取）
-│   └── index.js             # Vuex入口（创建store实例、注册模块等）
-├── utils/                   # 工具函数目录（通用功能）
-│   ├── auth.js              # 权限认证工具（token存储、验证等）
-│   ├── constant.js          # 常量定义（接口地址、状态码等）
-│   ├── format.js            # 数据格式化工具（时间、字符串等）
-│   ├── mockData.js          # 模拟数据（开发测试用）
-│   └── request.js           # 请求封装（axios拦截、配置等）
-├── views/                   # 页面视图目录（路由对应页面）
-│   ├── admin/
-│   │   ├── ProblemEdit.vue  # 管理员端题目编辑页面
-│   │   └── ProblemManagement.vue # 管理员端题目管理页面
-│   ├── login/
-│   │   └── AppLogin.vue     # 登录页面
-│   ├── problem/
-│   │   ├── ProblemDetailView.vue # 题目详情页面（基于ProblemDetail组件）
-│   │   └── ProblemList.vue  # 题目列表页面
-│   ├── submission/
-│   │   └── SubmissionHistory.vue # 提交历史页面
-│   ├── user/
-│   │   └── AppHome.vue      # 用户首页
-│   ├── NotFound.vue         # 404页面（路由匹配失败展示）
-│   └── App.vue              # 根组件（应用入口页面容器）
-└── main.js                  # 项目入口文件（创建Vue实例、挂载等）
+src
+├─ api                  # 接口请求层：封装所有后端接口调用
+│  ├─ admin.js          # 管理员相关接口（题目管理、权限操作等）
+│  ├─ problem.js        # 题目相关接口（题目列表、详情、提交判题等）
+│  ├─ submission.js     # 提交记录相关接口（提交列表、判题结果查询等）
+│  └─ user.js           # 用户相关接口（登录、注册、个人信息、设置等）
+├─ assets               # 静态资源层：存放样式、图片等静态文件
+│  ├─ css               # 通用CSS文件（未拆分到styles的基础样式）
+│  ├─ images            # 项目图片资源（图标、背景图等）
+│  └─ styles            # 核心样式文件
+│     ├─ Applogin.css   # 登录/注册页面专属样式
+│     ├─ AppNavbar.css  # 导航栏组件专属样式
+│     ├─ common.css     # 全局通用样式（重置样式、公共类名等）
+│     └─ variables.scss # SCSS全局变量（颜色、字体、间距等）
+├─ components           # 通用组件层：可复用的Vue组件（按业务拆分）
+│  ├─ admin             # 管理员专属组件
+│  │  ├─ ProblemForm.vue # 题目新增/编辑表单组件
+│  │  └─ ProblemManagement.vue # 题目列表管理组件（查询、删除、编辑）
+│  ├─ common            # 全局通用组件
+│  │  ├─ AppFooter.vue  # 页面底部版权/导航组件
+│  │  └─ AppNavbar.vue  # 页面顶部导航栏（含登录态、菜单切换）
+│  ├─ problem           # 题目相关组件
+│  │  ├─ ProblemDetail.vue # 题目详情展示组件（题干、输入输出示例等）
+│  │  ├─ ProblemItem.vue   # 题目列表项组件（单个题目卡片）
+│  │  └─ ProblemTags.vue   # 题目标签组件（难度、题型等标签展示）
+│  └─ submission        # 提交记录相关组件
+│     ├─ CodeEditor.vue    # 代码编辑组件（支持语法高亮、代码提交）
+│     ├─ JudgeResult.vue   # 判题结果展示组件（AC/WA/RE等状态+详情）
+│     ├─ SubmissionItem.vue # 提交记录列表项组件（单个提交记录展示）
+│     └─ SubmissionList.vue # 提交记录列表组件（查询、筛选提交记录）
+├─ layouts              # 布局组件层：页面整体布局容器
+│  └─ MainLayout.vue    # 主布局组件（包含Navbar+Footer+内容区域）
+├─ router               # 路由配置层：前端路由管理
+│  ├─ index.js          # 路由入口（创建路由实例、挂载路由守卫等）
+│  └─ routes.js         # 路由规则定义（所有页面的路由路径、组件映射）
+├─ store                # 状态管理层：Vuex全局状态管理（按模块拆分）
+│  ├─ modules           # Vuex模块拆分
+│  │  ├─ problem.js     # 题目相关状态（题目列表、当前题目详情等）
+│  │  ├─ submission.js  # 提交相关状态（提交记录、判题结果等）
+│  │  └─ user.js        # 用户相关状态（登录态、用户信息、权限等）
+│  ├─ getters.js        # Vuex全局getters（统一获取各模块状态）
+│  └─ index.js          # Vuex入口（创建store实例、注册模块等）
+├─ utils                # 工具函数层：通用工具方法封装
+│  ├─ auth.js           # 权限相关工具（JWT存储/解析、登录态校验等）
+│  ├─ constant.js       # 全局常量（接口地址、状态码、枚举值等）
+│  ├─ debounce.js       # 防抖函数（防止重复点击、频繁请求）
+│  ├─ format.js         # 格式化工具（时间、判题状态、文件大小等）
+│  ├─ mockData.js       # 模拟数据（开发阶段替代后端接口）
+│  └─ request.js        # 请求封装（Axios拦截器、请求/响应统一处理）
+├─ views                # 页面视图层：对应路由的页面级组件
+│  ├─ admin             # 管理员页面
+│  │  ├─ ProblemEdit.vue   # 题目编辑页面（复用ProblemForm组件）
+│  │  └─ ProblemManagement.vue # 题目管理页面（复用ProblemManagement组件）
+│  ├─ login             # 登录/注册页面
+│  │  ├─ AppLogin.vue   # 登录页面（账号密码登录、验证码等）
+│  │  └─ AppRegister.vue # 注册页面（用户信息填写、校验等）
+│  ├─ problem           # 题目相关页面
+│  │  ├─ ProblemDetailView.vue # 题目详情页面（基于MainLayout+ProblemDetail）
+│  │  └─ ProblemListView.vue   # 题目列表页面（基于MainLayout+ProblemItem）
+│  ├─ submission        # 提交记录页面
+│  │  └─ SubmissionHistory.vue # 提交历史页面（基于MainLayout+SubmissionList）
+│  ├─ user              # 用户中心页面
+│  │  ├─ UserProfile.vue # 个人资料页面（展示/编辑用户信息）
+│  │  └─ UserSetting.vue # 用户设置页面（密码修改、偏好设置等）
+│  ├─ AppHome.vue       # 项目首页（展示平台介绍、热门题目等）
+│  └─ NotFound.vue      # 404页面（路由匹配失败时展示）
+├─ App.vue              # 根组件（挂载路由出口、全局样式引入）
+└─ main.js              # 项目入口文件（创建Vue实例、挂载路由/store等）
 ```
 
 这个架构清晰地将项目分为 10 个核心模块，每个模块都有明确的职责边界，确保了代码的可维护性和可扩展性。
