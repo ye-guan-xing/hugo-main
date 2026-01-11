@@ -1,21 +1,28 @@
 <script>
-// 过滤本地IP访问（127.0.0.1或localhost）
-function isLocalhost() {
-  const ip = window.location.hostname;
-  return ip === 'localhost' || ip === '127.0.0.1' || /^192\.168\.\d+\.\d+$/.test(ip);
-}
+  // 过滤本地IP访问（127.0.0.1或localhost）
+  function isLocalhost() {
+    const ip = window.location.hostname;
+    return ip === "localhost";
+  }
 
-if (!isLocalhost()) {
-  // 非本地访问才加载不蒜子脚本
-  const script = document.createElement('script');
-  script.src = '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';
-  script.async = true;
-  document.head.appendChild(script);
-}
+  if (!isLocalhost()) {
+    // 非本地访问才加载不蒜子脚本
+    const script = document.createElement("script");
+    script.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+    script.async = true;
+    document.head.appendChild(script);
+  }
 </script>
 
 <!-- 显示统计标签（本地访问时会显示空值，部署后正常计数） -->
-<div style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center;">
-  <span id="busuanzi_container_site_uv">本站访客：<span id="busuanzi_value_site_uv"></span> 人</span> · 
-  <span id="busuanzi_container_site_pv">总访问量：<span id="busuanzi_value_site_pv"></span> 次</span>
+<div
+  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center"
+>
+  <span id="busuanzi_container_site_uv"
+    >本站访客：<span id="busuanzi_value_site_uv"></span> 人</span
+  >
+  ·
+  <span id="busuanzi_container_site_pv"
+    >总访问量：<span id="busuanzi_value_site_pv"></span> 次</span
+  >
 </div>
