@@ -2,7 +2,7 @@
 draft: false
 date: 2026-02-13 16:36:00 +0800
 title: "前端学习路线：从入门到进阶"
-categories: ["web开发"]
+categories: ["学习路线"]
 ---
 
 ## 前言
