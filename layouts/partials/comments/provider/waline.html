@@ -16,6 +16,10 @@
 {{- $showReaction := (default true .Params.reaction) -}}
 {{- with .Site.Params.comments.waline -}}
 {{- $config := dict "el" "#waline" "dark" `html[data-scheme="dark"]` -}}
+{{- $serverURL := or (index . "serverURL") (index . "serverurl") -}}
+{{- if $serverURL -}}
+  {{- $config = merge $config (dict "serverURL" $serverURL) -}}
+{{- end -}}
 {{- $replaceKeys := dict "serverurl" "serverURL" "requiredmeta" "requiredMeta" "wordlimit" "wordLimit" "pagesize" "pageSize" "imageuploader" "imageUploader" "texrenderer" "texRenderer" "commentsorting" "commentSorting" "recaptchav3key" "recaptchaV3Key" "turnstilekey" "turnstileKey" -}}
 {{- $replaceLocaleKeys := dict "reactiontitle" "reactionTitle" "gifsearchplaceholder" "gifSearchPlaceholder" "nickerror" "nickError" "mailerror" "mailError" "wordhint" "wordHint" "cancellike" "cancelLike" "cancelreply" "cancelReply" "uploadimage" "uploadImage" -}}
 
