@@ -110,12 +110,11 @@ params:
       serverURL: https://www.acyeapp.top
       lang: zh-CN
       pageview: false
-      comment: false
       emoji:
         - https://unpkg.com/@waline/emojis@1.0.1/weibo
       requiredMeta:
-        - name
-        - email
+        - nick
+        - mail
       locale:
         admin: Admin
         placeholder: 欢迎留言，建议填写正确邮箱以便接收回复通知

@@ -26,6 +26,7 @@
   <span id="busuanzi_container_site_pv"
     >总访问量：<span id="busuanzi_value_site_pv"></span> 次</span
   >
+  <!--
   ·
   <span
     >Waline统计：<span
@@ -36,12 +37,13 @@
     >
     次</span
   >
+  -->
 </div>
 
 <script>
   (async () => {
     const indexCountEle = document.querySelector(".waline-index-count");
-    const walineUrl = indexCountEle?.getAttribute("waline-url")?.replace(/\/$/, "");
+    const walineUrl = "{{ .Site.Params.comments.waline.serverURL }}".replace(/\/$/, "");
     if (!walineUrl) return;
 
     const pageCountEles = document.querySelectorAll(".waline-pageview-count");
