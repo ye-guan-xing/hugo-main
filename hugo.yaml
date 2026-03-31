@@ -32,7 +32,7 @@ services:
     id:
 
 pagination:
-  pagerSize: 3
+  pagerSize: 10
 
 permalinks:
   post: /p/:slug/
@@ -72,7 +72,7 @@ params:
 
   comments:
     enabled: true
-    provider: disqus
+    provider: waline
 
     disqusjs:
       shortname:
@@ -107,18 +107,18 @@ params:
 
     # Waline client configuration see: https://waline.js.org/en/reference/component.html
     waline:
-      serverURL:
-      lang:
-      pageview:
+      serverURL: https://www.acyeapp.top
+      lang: zh-CN
+      pageview: false
+      comment: false
       emoji:
         - https://unpkg.com/@waline/emojis@1.0.1/weibo
       requiredMeta:
         - name
         - email
-        - url
       locale:
         admin: Admin
-        placeholder:
+        placeholder: 欢迎留言，建议填写正确邮箱以便接收回复通知
 
     twikoo:
       envId:
