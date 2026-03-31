@@ -1,5 +1,4 @@
-<script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
-<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
 <div id="waline" class="waline-container"></div>
 <style>
     .waline-container {
@@ -16,26 +15,38 @@
 
 {{- with .Site.Params.comments.waline -}}
 {{- $config := dict "el" "#waline" "dark" `html[data-scheme="dark"]` -}}
-{{- $replaceKeys := dict "serverurl" "serverURL" "requiredmeta" "requiredMeta" "wordlimit" "wordLimit" "pagesize" "pageSize" "imageuploader" "imageUploader" "texrenderer" "texRenderer" "turnstilekey" "turnstileKey" -}}
+{{- $serverURL := or (index . "serverURL") (index . "serverurl") -}}
+{{- if $serverURL -}}
+    {{- $config = merge $config (dict "serverURL" $serverURL) -}}
+{{- end -}}
+{{- $replaceKeys := dict "serverurl" "serverURL" "requiredmeta" "requiredMeta" "wordlimit" "wordLimit" "pagesize" "pageSize" "imageuploader" "imageUploader" "texrenderer" "texRenderer" "commentsorting" "commentSorting" "recaptchav3key" "recaptchaV3Key" "turnstilekey" "turnstileKey" -}}
+{{- $replaceLocaleKeys := dict "reactiontitle" "reactionTitle" "gifsearchplaceholder" "gifSearchPlaceholder" "nickerror" "nickError" "mailerror" "mailError" "wordhint" "wordHint" "cancellike" "cancelLike" "cancelreply" "cancelReply" "uploadimage" "uploadImage" -}}
 
 {{- range $key, $val := . -}}
     {{- if ne $val nil -}}  
         {{- $replaceKey := index $replaceKeys $key -}}
         {{- $k := default $key $replaceKey -}}
-
-        {{- $config = merge $config (dict $k $val) -}}
+        {{- if eq $k "locale" -}}
+            {{- $locale := dict -}}
+            {{- range $lkey, $lval := $val -}}
+                {{- if ne $lval nil -}}
+                    {{- $replaceLKey := index $replaceLocaleKeys $lkey -}}
+                    {{- $lk := default $lkey $replaceLKey -}}
+                    {{- $locale = merge $locale (dict $lk $lval) -}}
+                {{- end -}}
+            {{- end -}}
+            {{- $config = merge $config (dict $k $locale) -}}
+        {{- else -}}
+            {{- $config = merge $config (dict $k $val) -}}
+        {{- end -}}
     {{- end -}}
 {{- end -}}
 
-<script>
-    /// Waline client configuration see: https://waline.js.org/en/reference/client.html
-    const walineConfig = {{ $config | jsonify | safeJS }};
-    let sameOrigin = false;
-    try {
-        sameOrigin = walineConfig.serverURL
-            ? new URL(walineConfig.serverURL).origin === window.location.origin
-            : false;
-    } catch (_) {}
-    if (walineConfig.serverURL && sameOrigin) Waline.init(walineConfig);
+<script type="application/json" id="waline-config">{{ $config | jsonify }}</script>
+<script type="module">
+    import { init } from "https://unpkg.com/@waline/client@v3/dist/waline.js";
+    const configText = document.getElementById("waline-config")?.textContent || "{}";
+    const config = JSON.parse(configText);
+    if (config.serverURL) init(config);
 </script>
 {{- end -}}
