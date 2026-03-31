@@ -13,6 +13,7 @@
     }
 </style>
 
+{{- $showReaction := (default true .Params.reaction) -}}
 {{- with .Site.Params.comments.waline -}}
 {{- $config := dict "el" "#waline" "dark" `html[data-scheme="dark"]` -}}
 {{- $serverURL := or (index . "serverURL") (index . "serverurl") -}}
@@ -36,6 +37,8 @@
                 {{- end -}}
             {{- end -}}
             {{- $config = merge $config (dict $k $locale) -}}
+        {{- else if eq $k "reaction" -}}
+            {{- $config = merge $config (dict $k (cond $showReaction $val false)) -}}
         {{- else -}}
             {{- $config = merge $config (dict $k $val) -}}
         {{- end -}}
@@ -46,7 +49,19 @@
 <script type="module">
     import { init } from "https://unpkg.com/@waline/client@v3/dist/waline.js";
     const configText = document.getElementById("waline-config")?.textContent || "{}";
-    const config = JSON.parse(configText);
-    if (config.serverURL) init(config);
+    let config = {};
+    try {
+        config = JSON.parse(configText);
+        if (typeof config === "string") {
+            config = JSON.parse(config);
+        }
+    } catch (e) {
+        config = {};
+    }
+    if (!config || typeof config !== "object" || Array.isArray(config)) {
+        config = {};
+    }
+    config.serverURL = config.serverURL || config.serverurl || "https://acyeapp.top";
+    init(config);
 </script>
 {{- end -}}

@@ -108,16 +108,42 @@ params:
     # Waline client configuration see: https://waline.js.org/en/reference/component.html
     waline:
       serverURL: https://www.acyeapp.top
-      lang: zh-CN
+      imageUploader: false
+      lang: en
+      meta:
+        - nick
+        - mail
       pageview: false
+      comment: false
       emoji:
-        - https://unpkg.com/@waline/emojis@1.0.1/weibo
+        - https://unpkg.com/@waline/emojis@1.2.0/tieba
+        - https://unpkg.com/@waline/emojis@1.2.0/bilibili
+        - https://unpkg.com/@waline/emojis@1.2.0/bmoji
+        - https://unpkg.com/@waline/emojis@1.2.0/weibo
+      reaction:
+        - https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_heart_eyes.png
+        - https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_thumbsup.png
+        - https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_zhoumei.png
+        - https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_grievance.png
+        - https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_dizzy_face.png
+        - https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_slap.png
       requiredMeta:
         - nick
         - mail
+      requiredMetaNames:
+        - nick
+        - mail
+      highlighter: true
       locale:
         admin: Admin
-        placeholder: 欢迎留言，建议填写正确邮箱以便接收回复通知
+        placeholder: "Welcome to leave your valuable comments!\nPlease provide a correct email address so that we can send you an email notification when there is a reply.\nDo not post any content unrelated to this article."
+        reactionTitle: Was this article helpful to you?
+        reaction0: Very helpful
+        reaction1: Helpful
+        reaction2: Average
+        reaction3: Not helpful
+        reaction4: Confused
+        reaction5: Incorrect
 
     twikoo:
       envId:
