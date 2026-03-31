@@ -50,6 +50,12 @@
   import { init } from "https://unpkg.com/@waline/client@v3/dist/waline.js";
   const configText = document.getElementById("waline-config")?.textContent || "{}";
   const config = JSON.parse(configText);
-  if (config.serverURL) init(config);
+  let sameOrigin = false;
+  try {
+    sameOrigin = config.serverURL
+      ? new URL(config.serverURL).origin === window.location.origin
+      : false;
+  } catch (_) {}
+  if (config.serverURL && sameOrigin) init(config);
 </script>
 {{- end -}}

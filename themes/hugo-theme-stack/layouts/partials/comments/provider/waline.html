@@ -30,6 +30,12 @@
 <script>
     /// Waline client configuration see: https://waline.js.org/en/reference/client.html
     const walineConfig = {{ $config | jsonify | safeJS }};
-    if (walineConfig.serverURL) Waline.init(walineConfig);
+    let sameOrigin = false;
+    try {
+        sameOrigin = walineConfig.serverURL
+            ? new URL(walineConfig.serverURL).origin === window.location.origin
+            : false;
+    } catch (_) {}
+    if (walineConfig.serverURL && sameOrigin) Waline.init(walineConfig);
 </script>
 {{- end -}}
