@@ -49,6 +49,7 @@
 <script type="module">
   import { init } from "https://unpkg.com/@waline/client@v3/dist/waline.js";
   const configText = document.getElementById("waline-config")?.textContent || "{}";
-  init(JSON.parse(configText));
+  const config = JSON.parse(configText);
+  if (config.serverURL) init(config);
 </script>
 {{- end -}}
