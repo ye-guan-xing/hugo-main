@@ -2,54 +2,58 @@
   {{ if .Params.categories }}
   <header class="article-category">
     {{ range (.GetTerms "categories") }}
-      <a href="{{ .RelPermalink }}" {{ with .Params.style }}style="background-color: {{ .background }}; color: {{ .color }};"{{ end }}>
-        {{ .LinkTitle }}
-      </a>
+    <a
+      href="{{ .RelPermalink }}"
+      {{
+      with
+      .Params.style
+      }}style="background-color: {{ .background }}; color: {{ .color }};"
+      {{
+      end
+      }}
+    >
+      {{ .LinkTitle }}
+    </a>
     {{ end }}
   </header>
   {{ end }}
 
   <div class="article-title-wrapper">
     <h2 class="article-title">
-      <a href="{{ .RelPermalink }}">
-        {{- .Title -}}
-      </a>
+      <a href="{{ .RelPermalink }}"> {{- .Title -}} </a>
     </h2>
 
     {{ with .Params.description }}
-      <h3 class="article-subtitle">
-        {{ . }}
-      </h3>
+    <h3 class="article-subtitle">{{ . }}</h3>
     {{ end }}
   </div>
 
-  {{ $showReadingTime := .Params.readingTime | default (.Site.Params.article.readingTime) }}
-  {{ $showDate := not .Date.IsZero }}
-  {{ $showFooter := or $showDate $showReadingTime }}
-  {{ if $showFooter }}
+  {{ $showReadingTime := .Params.readingTime | default
+  (.Site.Params.article.readingTime) }} {{ $showDate := not .Date.IsZero }} {{
+  $showFooter := or $showDate $showReadingTime }} {{ if $showFooter }}
   <footer class="article-time">
     {{ if $showDate }}
-      <div>
-        {{ partial "helper/icon" "date" }}
-        <time class="article-time--published">
-          {{- .Date | time.Format (or .Site.Params.dateFormat.published "Jan 02, 2006") -}}
-        </time>
-      </div>
-    {{ end }}
-
-    {{ if $showReadingTime }}
-      <div>
-        {{ partial "helper/icon" "clock" }}
-        <time class="article-time--reading">
-          {{ T "article.readingTime" .ReadingTime }}
-        </time>
-      </div>
-    {{ end }}
+    <div>
+      {{ partial "helper/icon" "date" }}
+      <time class="article-time--published">
+        {{- .Date | time.Format (or .Site.Params.dateFormat.published "Jan 02, 2006") -}}
+      </time>
+    </div>
+    {{ end }} {{/* {{ if $showReadingTime }}
+    <div>
+      {{ partial "helper/icon" "clock" }}
+      <time class="article-time--reading">
+        {{ T "article.readingTime" .ReadingTime }}
+      </time>
+    </div>
+    {{ end }} */}}
 
     <div>
       {{ partial "helper/icon" "view" }}
       <time class="article-pageview">
-        <span class="waline-pageview-count" data-path="{{ .RelPermalink }}">0</span>
+        <span class="waline-pageview-count" data-path="{{ .RelPermalink }}"
+          >0</span
+        >
         visits
       </time>
     </div>
@@ -57,21 +61,21 @@
     <div>
       {{ partial "helper/icon" "comment" }}
       <time class="article-comment">
-        <span class="waline-comment-count" data-path="{{ .RelPermalink }}">0</span>
+        <span class="waline-comment-count" data-path="{{ .RelPermalink }}"
+          >0</span
+        >
         comments
       </time>
     </div>
   </footer>
-  {{ end }}
-
-  {{ if .IsTranslated }}
-    <footer class="article-translations">
-      {{ partial "helper/icon" "language" }}
-      <div>
-        {{ range .Translations }}
-          <a href="{{ .Permalink }}" class="link">{{ .Language.LanguageName }}</a>
-        {{ end }}
-      </div>
-    </footer>
+  {{ end }} {{ if .IsTranslated }}
+  <footer class="article-translations">
+    {{ partial "helper/icon" "language" }}
+    <div>
+      {{ range .Translations }}
+      <a href="{{ .Permalink }}" class="link">{{ .Language.LanguageName }}</a>
+      {{ end }}
+    </div>
+  </footer>
   {{ end }}
 </div>
