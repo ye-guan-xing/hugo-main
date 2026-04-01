@@ -1,6 +1,6 @@
 ---
 draft: false
-date: 2025-12-14 22:36:00 +0800
+date: 2025-12-14 22:36:00
 title: "CSS小案例，讲布局（Flex+Grid）"
 categories: ["web开发"]
 tags: ["项目开发"]

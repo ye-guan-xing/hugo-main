@@ -1,6 +1,6 @@
 ---
 draft: flase
-date: 2025-11-28 8:36:00 +0800
+date: 2025-11-28 8:36:00
 title: "力扣hot150(精讲)"
 categories: ["算法"]
 tags: ["C++"]
