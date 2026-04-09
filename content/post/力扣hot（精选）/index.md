@@ -245,8 +245,11 @@ public:
 * 其实你想想这是一个误区，数组的顺序反而不重要
 
 ### [接雨水](https://leetcode-cn.com/problems/trapping-rain-water/)
+
 * 网红题目,不必多言<del>据说字节的扫地阿姨都会做</del>
+
 * 我的思路：<del>其实我不理解为什么说难</del>看一个柱子能接多少水，应该就能想到贪心+双指针/单调栈
+
 ```cpp
 class Solution {
 public:
