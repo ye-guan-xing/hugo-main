@@ -1,7 +1,7 @@
 ---
 draft: flase
 date: 2026-04-01 01:00:00
-title: "力扣hot100(精讲)"
+title: "力扣hot100(精讲一)"
 categories: ["算法"]
 tags: ["C++"]
 ---
@@ -12,7 +12,7 @@ tags: ["C++"]
 - 我觉得有趣，如果开发累了，可以换一换脑子
 - 注：题目可直抵题目，所以不写题目内容
 
-## 题目讲解
+## 题目讲解[哈希+双指针+滑动窗口+子串+普通数组+矩阵]
 
 ### 哈希：快速映射和快速查找
 
@@ -87,7 +87,10 @@ public:
 };
 ```
 
-####[最长连续序列](https://leetcode.cn/problems/longest-consecutive-sequence/description/)
+#### [最长连续序列](https://leetcode.cn/problems/longest-consecutive-sequence/description/)
+
+- 思路:因为是O(n)所以是不能用排序，所以要用不能用排序，要用unordered_set的特性
+  先来去重，然后在用.count() 去查找计数
 
 ```cpp
 class Solution {
@@ -142,6 +145,10 @@ public:
 
 #### [盛最多水的容器](https://leetcode.cn/problems/container-with-most-water/description/)
 
+- 思路：贪心+双指针
+  这题往双指针方向想很正常，问题在于怎么让矩形更大（x\*y）
+  贪心在：面积 = min(左高, 右高) × (右索引 - 左索引)
+
 ```cpp
 class Solution {
 public:
@@ -149,13 +156,13 @@ public:
         int l=0,r=height.size()-1;
         int ans=0;
         while(l<r){
-            if(height[l]>=height[r]){
-                ans=max(ans,height[r]*(r-l));
-                r--;
-            }
-            else{
+            if(height[l]<height[r]){
                 ans=max(ans,height[l]*(r-l));
                 l++;
+            }
+            else{
+                ans=max(ans,height[r]*(r-l));
+                r--;
             }
         }
         return ans;
@@ -164,6 +171,9 @@ public:
 ```
 
 #### [三数之和](https://leetcode.cn/problems/3sum/description/)
+
+- 思路：三个数和双指针，那怎么办？=>先排序后固定一个数（b + c = -a），O(n2)
+重点：不能全局去重改变数组
 
 ```cpp
 class Solution {
@@ -193,7 +203,7 @@ public:
 };
 ```
 
-####[接雨水](https://leetcode.cn/problems/trapping-rain-water/description/)
+#### [接雨水](https://leetcode.cn/problems/trapping-rain-water/description/)
 
 ```cpp
 class Solution {
@@ -247,7 +257,7 @@ public:
 
 #### [找到字符串中所有字母异位词](https://leetcode.cn/problems/find-all-anagrams-in-a-string/description/)
 
-\*暴力写法
+- 暴力写法
 
 ```cpp
 class Solution {
@@ -269,7 +279,7 @@ public:
 };
 ```
 
-\*滑动窗口
+* 滑动窗口
 
 ```cpp
 class Solution {
@@ -619,208 +629,6 @@ public:
             }
         }
         return false;
-    }
-};
-```
-
-### 二叉树
-
-- 遍历 顺序 最适合干什么？
-- 前序 根左右 复制树、创建树
-- 中序 左根右 BST 有序输出、找第 k 小
-- 后序 左右根 求深度、求高度、删树
-
-#### [二叉树的中序遍历](https://leetcode.cn/problems/binary-tree-inorder-traversal/description/)
-
-- 建议大家看一下 [模版](https://www.luogu.com.cn/problem/B3642#ide)
-
-```cpp
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
-class Solution {
-public:
-    void dfs(TreeNode* root,vector<int>& res){
-        if(!root) return;
-        dfs(root->left,res);
-        res.push_back(root->val);
-        dfs(root->right,res);
-    }
-    vector<int> inorderTraversal(TreeNode* root) {
-        vector<int>res;
-        dfs(root,res);
-        return res;
-    }
-};
-```
-
-#### [二叉树的最大深度](https://leetcode.cn/problems/maximum-depth-of-binary-tree/)
-
-```cpp
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
-class Solution {
-public:
-    int maxDepth(TreeNode* root) {
-        if(!root) return 0;
-        int l=maxDepth(root->left);
-        int r=maxDepth(root->right);
-        return max(l,r)+1;
-    }
-};
-```
-
-#### [对称二叉树](https://leetcode.cn/problems/symmetric-tree/description/?)
-
-```cpp
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
-class Solution {
-public:
-    bool dfs(TreeNode* p,TreeNode* q){
-        if(!p||!q) return p==q;
-        return (p->val==q->val)&&dfs(p->left,q->right)&&dfs(p->right,q->left);
-    }
-    bool isSymmetric(TreeNode* root) {
-        if(!root) return true;
-        bool ans=dfs(root->left,root->right);
-        return ans;
-    }
-};
-```
-
-#### [二叉树的直径](https://leetcode.cn/problems/diameter-of-binary-tree/description/)
-
-```cpp
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
-class Solution {
-public:
-    int ans=0;
-    int dfs(TreeNode* root){
-        if(!root) return 0;
-        int l=dfs(root->left);
-        int r=dfs(root->right);
-        ans=max(ans,l+r);
-        return max(l,r)+1;
-    }
-    int diameterOfBinaryTree(TreeNode* root) {
-        if(!root) return 0;
-        dfs(root);
-        return ans;
-    }
-};
-```
-
-#### [翻转二叉树](https://leetcode.cn/problems/invert-binary-tree/description/)
-
-```cpp
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
-class Solution {
-public:
-    TreeNode* invertTree(TreeNode* root) {
-        //边界
-        if(!root) return nullptr;
-        //子问题
-        TreeNode* l=invertTree(root->left);
-        TreeNode* r=invertTree(root->right);
-        root->left=r;
-        root->right=l;
-        return root;
-    }
-};
-```
-
-#### [二叉树的层序遍历](https://leetcode.cn/problems/binary-tree-level-order-traversal/)
-
-- dfs
-
-```cpp
-class Solution {
-public:
-    void dfs(TreeNode* root,int depth,vector<vector<int>>& res){
-        if(!root) return;
-        if(res.size()==depth) res.push_back({});
-        res[depth].push_back(root->val);
-        dfs(root->left,depth+1,res);
-        dfs(root->right,depth+1,res);
-    }
-    vector<vector<int>> levelOrder(TreeNode* root) {
-        vector<vector<int>>res;
-        dfs(root,0,res);
-        return res;
-    }
-};
-```
-
-- bfs
-
-```cpp
-class Solution {
-public:
-    vector<vector<int>> levelOrder(TreeNode* root) {
-        vector<vector<int>>ans;
-        if(!root) return ans;
-        queue<TreeNode*>q;
-        q.push(root);
-        while(!q.empty()){
-            vector<int>val;
-            int n=q.size();
-            for(int i=0;i<n;i++){
-                auto node=q.front();
-                q.pop();
-                val.push_back(node->val);
-                if(node->left) q.push(node->left);
-                if(node->right) q.push(node->right);
-            }
-            ans.push_back(val);
-        }
-        return ans;
     }
 };
 ```
