@@ -120,7 +120,8 @@ public:
 };
 ```
 
-* 双指针思路：同一的快慢指针思路，只是判断条件不同   O(n)
+- 双指针思路：同一的快慢指针思路，只是判断条件不同 O(n)
+
 ```cpp
 class Solution {
 public:
@@ -146,8 +147,11 @@ public:
     }
 };
 ```
+
 ### [O(1) 时间插入、删除和获取随机元素](https://leetcode-cn.com/problems/insert-delete-getrandom-o1/)
-* 说实话我不会，这是我想的，算暴力吧
+
+- 说实话我不会，这是我想的，算暴力吧
+
 ```cpp
 class RandomizedSet {
 public:
@@ -170,7 +174,7 @@ public:
         }
         return 0;
     }
-    
+
     bool remove(int val) {
         int loc=find(val);
         if(loc==-1) return 0;
@@ -187,18 +191,20 @@ public:
     vector<int>a;
 };
 ```
-* 过了好一段时间，才想到的哈希
+
+- 过了好一段时间，才想到的哈希
+
 ```cpp
 class RandomizedSet {
 public:
-    unordered_map<int, int> mp; 
-    vector<int> a; 
+    unordered_map<int, int> mp;
+    vector<int> a;
     RandomizedSet() {
-        srand(time(0)); 
+        srand(time(0));
     }
 
     int find(int val) {
-        if (mp.count(val)) { 
+        if (mp.count(val)) {
             return mp[val];
         }
         return -1;
@@ -219,10 +225,10 @@ public:
             return false;
         }
 
-        int last = a.back(); 
-        a[loc] = last; 
-        mp[last] = loc; 
-        
+        int last = a.back();
+        a[loc] = last;
+        mp[last] = loc;
+
         mp.erase(val);
         a.pop_back();
         return true;
@@ -234,21 +240,22 @@ public:
     }
 };
 ```
-* 讲解一下remove()方法(不太好想)
-> 先明确两个前提：
-* 数组a的特点：尾部增删元素（push_back/pop_back）是 O (1) 时间，但中间删除元素（erase）是 O (n) 时间（因为后面的元素要整体前移）。
-* 哈希表mp的作用：记录 “元素值→数组索引”，比如mp[3]=2表示元素 3 在数组a的索引 2 位置。
-你可能觉得 “元素要相连才合理”，但的核心需求是：
-插入 / 删除 / 随机访问都是 O (1)；
-元素不重复。
-它不要求元素保持任何顺序，所以哪怕用 “八竿子打不着的最后一个元素” 替换，只要最终删掉了目标元素，且哈希表映射正确，就完全符合要求。
-* 其实你想想这是一个误区，数组的顺序反而不重要
+
+- 讲解一下remove()方法(不太好想)
+  > 先明确两个前提：
+- 数组a的特点：尾部增删元素（push_back/pop_back）是 O (1) 时间，但中间删除元素（erase）是 O (n) 时间（因为后面的元素要整体前移）。
+- 哈希表mp的作用：记录 “元素值→数组索引”，比如mp[3]=2表示元素 3 在数组a的索引 2 位置。
+  你可能觉得 “元素要相连才合理”，但的核心需求是：
+  插入 / 删除 / 随机访问都是 O (1)；
+  元素不重复。
+  它不要求元素保持任何顺序，所以哪怕用 “八竿子打不着的最后一个元素” 替换，只要最终删掉了目标元素，且哈希表映射正确，就完全符合要求。
+- 其实你想想这是一个误区，数组的顺序反而不重要
 
 ### [接雨水](https://leetcode-cn.com/problems/trapping-rain-water/)
 
-* 网红题目,不必多言<del>据说字节的扫地阿姨都会做</del>
+- 网红题目,不必多言<del>据说字节的扫地阿姨都会做</del>
 
-* 我的思路：<del>其实我不理解为什么说难</del>看一个柱子能接多少水，应该就能想到贪心+双指针/单调栈
+- 我的思路：<del>其实我不理解为什么说难</del>看一个柱子能接多少水，应该就能想到贪心+双指针/单调栈
 
 ```cpp
 class Solution {

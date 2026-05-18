@@ -173,7 +173,7 @@ public:
 #### [三数之和](https://leetcode.cn/problems/3sum/description/)
 
 - 思路：三个数和双指针，那怎么办？=>先排序后固定一个数（b + c = -a），O(n2)
-重点：不能全局去重改变数组
+  重点：不能全局去重改变数组 。三个数都要做去重
 
 ```cpp
 class Solution {
@@ -204,6 +204,10 @@ public:
 ```
 
 #### [接雨水](https://leetcode.cn/problems/trapping-rain-water/description/)
+
+- 网红题目,不必多言<del>据说字节的扫地阿姨都会做</del>
+
+- 我的思路：<del>其实我不理解为什么说难</del>看一个柱子能接多少水，应该就能想到贪心+双指针/单调栈
 
 ```cpp
 class Solution {
@@ -279,7 +283,7 @@ public:
 };
 ```
 
-* 滑动窗口
+- 滑动窗口
 
 ```cpp
 class Solution {
