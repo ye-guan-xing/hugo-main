@@ -73,7 +73,8 @@ setTimeout(() => {
 ---
 
 ## 三、异步二代：Promise（规范化解决方案）
->推荐的手撕过程:https://www.jiangxu.net/blog/promiseTutorial
+
+>[推荐的手撕过程](https://www.jiangxu.net/blog/promiseTutorial)
 
 如果说回调函数是「口头约定」，那 Promise 就是标准化的异步凭证，可以通俗理解为「取餐号」。
 
