@@ -5,9 +5,7 @@ title: "前端如何快进后端"
 categories: ["后端开发"]
 ---
 
-> 本系列基于 Campus-OJ 项目的真实后端代码 `backend/oj-nest`，用前端熟悉的概念帮你建立服务端开发心智模型。
-
->[项目代码](https://github.com/ye-guan-xing/AI-Full-Stack-OJ-System/tree/main/backend/oj-nest)
+> 本系列基于 Campus-OJ 项目的真实后端代码 `backend/oj-nest`，用前端熟悉的概念帮你建立服务端开发心智模型。[项目代码](https://github.com/ye-guan-xing/AI-Full-Stack-OJ-System/tree/main/backend/oj-nest)
 
 ## 讲什么
 
