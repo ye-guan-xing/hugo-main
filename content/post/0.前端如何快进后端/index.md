@@ -7,6 +7,8 @@ categories: ["后端开发"]
 
 > 本系列基于 Campus-OJ 项目的真实后端代码 `backend/oj-nest`，用前端熟悉的概念帮你建立服务端开发心智模型。
 
+>[项目代码](https://github.com/ye-guan-xing/AI-Full-Stack-OJ-System/tree/main/backend/oj-nest)
+
 ## 讲什么
 
 `oj-nest` 是一个 **NestJS 11** 写的在线判题（OJ）后端。本文档不是单纯讲项目代码，而是把这个项目当成练习场，帮有 Vue / TypeScript 基础的前端开发者补齐后端核心能力：
