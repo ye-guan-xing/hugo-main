@@ -66,7 +66,7 @@ sequenceDiagram
   Int-->>FE: code=1 data=...
 ```
 
-## Step 1：Controller 接路由
+## Controller 接路由
 
 文件：`backend/oj-nest/src/modules/user/user.controller.ts`
 
@@ -91,7 +91,7 @@ export class UserController {
 >
 > 本项目落点：`UserController.login` 只负责接收 `LoginDto` 并调用 `UserService.login`。
 
-## Step 2：DTO 校验
+## DTO 校验
 
 文件：`backend/oj-nest/src/modules/user/dto/user.dto.ts`
 
@@ -122,7 +122,7 @@ export class LoginDto {
 >
 > 本项目落点：全局 `ValidationPipe` 会处理 `LoginDto`、`RegisterDto`、`SubmitTestQuestionDto` 等输入对象。
 
-## Step 3：Service 执行业务
+## Service 执行业务
 
 文件：`backend/oj-nest/src/modules/user/user.service.ts`
 
@@ -151,7 +151,7 @@ async login(dto: LoginDto) {
 >
 > 本项目落点：登录流程里的查用户、比对密码、写 Redis token 都在 `UserService.login`。
 
-## Step 4：参数装饰器一览
+## 参数装饰器一览
 
 | 装饰器 | 来源 | 示例 |
 |--------|------|------|
@@ -162,7 +162,7 @@ async login(dto: LoginDto) {
 
 Query 参数默认是字符串，`ValidationPipe` 的 `transform: true` 可配合 DTO 里的 `@Type(() => Number)` 做类型转换。
 
-## Step 5：ResponseInterceptor 包装
+## ResponseInterceptor 包装
 
 文件：`backend/oj-nest/src/common/interceptors/response.interceptor.ts`
 
@@ -193,7 +193,7 @@ else { /* 业务/HTTP 错误 */ }
 >
 > 本项目落点：`ResponseInterceptor` 固定输出 `{ code, message, data }`，前端只需要按一种结构取数据。
 
-## Step 6：异常 Filter
+## 异常 Filter
 
 文件：`backend/oj-nest/src/common/filters/http-exception.filter.ts`
 
@@ -225,7 +225,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
 >
 > 本项目落点：`AllExceptionsFilter` 让 `NotFoundException`、`UnauthorizedException` 等异常都变成前端可读的 `{ code, message, data: null }`。
 
-## Step 7：LoggingInterceptor
+## LoggingInterceptor
 
 文件：`backend/oj-nest/src/common/interceptors/logging.interceptor.ts`
 

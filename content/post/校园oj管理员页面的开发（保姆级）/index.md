@@ -8,7 +8,7 @@ tags: ["前端开发"]
 
 由于没有后端，我来为你添加前端模拟数据和模拟 API，并解释为什么不需要处理 token。
 
-## 1. 创建模拟数据存储
+## 创建模拟数据存储
 
 首先在 `src/utils/` 下创建模拟数据管理工具：
 
@@ -142,7 +142,7 @@ class MockStorage {
 export const mockStorage = new MockStorage();
 ```
 
-## 2. 修改 API 文件支持模拟数据
+## 修改 API 文件支持模拟数据
 
 ### `src/api/admin.js` (更新版本)
 
@@ -273,7 +273,7 @@ export const problemAdminAPI = {
 };
 ```
 
-## 3. 更新组件处理模拟数据响应
+## 更新组件处理模拟数据响应
 
 ### `src/components/admin/ProblemManagement.vue` (关键部分更新)
 
@@ -389,7 +389,7 @@ const fetchProblemDetail = async (id) => {
 };
 ```
 
-## 4. 为什么不需要处理 Token
+## 为什么不需要处理 Token
 
 ### 原因分析：
 

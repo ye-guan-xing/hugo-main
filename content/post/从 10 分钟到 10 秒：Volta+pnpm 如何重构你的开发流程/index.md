@@ -7,9 +7,9 @@ categories: ["工程优化"]
 
 Node版本切换、依赖安装慢、node_modules臃肿、跨平台兼容差是前端/全栈开发的常见痛点。本文对比NVM、npm的核心缺点，详解Volta和pnpm的优势，并整理常用命令、全栈项目标准化启动流程及最佳实践。
 
-## 一、NVM+npm 的核心痛点
+## NVM+npm 的核心痛点
 
-### 1. NVM 的问题
+### NVM 的问题
 
 - **跨平台差**：仅原生支持Linux/macOS，Windows需用非官方的NVM-windows，且存在兼容性问题
 - **全局CLI失效**：切换Node版本后，已安装的全局工具需重新安装，浪费时间
@@ -17,7 +17,7 @@ Node版本切换、依赖安装慢、node_modules臃肿、跨平台兼容差是�
 - **速度慢**：虽有缓存但机制不完善，每次安装/切换仍需较长时间
 - **项目锁定不智能**：需手动创建.nvmrc文件，且不会自动切换版本
 
-### 2. npm 的致命问题：从依赖臃肿到幽灵依赖
+### npm 的致命问题：从依赖臃肿到幽灵依赖
 
 npm的扁平化依赖设计虽然解决了早期的嵌套地狱问题，但引入了更严重的隐患：
 
@@ -27,7 +27,7 @@ npm的扁平化依赖设计虽然解决了早期的嵌套地狱问题，但引�
 - **权限问题**：macOS/Linux下全局安装需sudo，易导致权限混乱
 - **幽灵依赖**：这是npm最隐蔽也最危险的问题
 
-## 二、Volta：更轻更稳的Node版本管理
+## Volta：更轻更稳的Node版本管理
 
 Volta是LinkedIn推出的跨平台Node版本管理器，主打"无痛版本切换+全局CLI持久化"。
 
@@ -78,7 +78,7 @@ volta list # 查看所有全局安装的工具
 volta uninstall @nestjs/cli
 ```
 
-## 三、pnpm：彻底解决npm的依赖问题
+## pnpm：彻底解决npm的依赖问题
 
 pnpm通过"内容寻址存储"和"非扁平化依赖树"，不仅解决了npm的"慢、臃肿"问题，更是**唯一从根本上解决幽灵依赖**的主流包管理器。
 
@@ -150,7 +150,7 @@ alias npm pnpm
 
 这样，你输入`npm run dev`时，实际执行的是`pnpm dev`，无需改变原有习惯。
 
-## 四、Volta+pnpm 全栈项目启动流程
+## Volta+pnpm 全栈项目启动流程
 
 ### 前置准备
 
@@ -162,7 +162,7 @@ volta install node@20
 volta install pnpm
 ```
 
-### 1. Nest.js（企业级后端）
+### Nest.js（企业级后端）
 
 ```bash
 # 安装Nest CLI（全局，切换Node版本不失效）
@@ -178,7 +178,7 @@ pnpm run start:dev
 volta pin node@20
 ```
 
-### 2. Express（轻量后端）
+### Express（轻量后端）
 
 ```bash
 # 方式1：手动搭建
@@ -196,7 +196,7 @@ pnpm start
 volta pin node@20
 ```
 
-### 3. Vue 3（前端）
+### Vue 3（前端）
 
 ```bash
 pnpm create vue@latest vue-demo
@@ -206,7 +206,7 @@ pnpm dev
 volta pin node@20
 ```
 
-### 4. Next.js（React SSR）
+### Next.js（React SSR）
 
 ```bash
 pnpm create next-app next-demo
@@ -216,7 +216,7 @@ pnpm dev
 volta pin node@20
 ```
 
-### 5. React（Vite）
+### React（Vite）
 
 ```bash
 pnpm create vite@latest react-demo -- --template react
@@ -226,9 +226,9 @@ pnpm dev
 volta pin node@20
 ```
 
-## 五、最佳实践与常见问题
+## 最佳实践与常见问题
 
-### 1. 配置国内镜像源
+### 配置国内镜像源
 
 为了提升下载速度，建议配置国内镜像源：
 
@@ -246,7 +246,7 @@ export VOLTA_NPM_DOWNLOAD_URL=https://npmmirror.com/mirrors/npm
 pnpm config set registry https://registry.npmmirror.com
 ```
 
-### 2. 从npm/yarn迁移到pnpm
+### 从npm/yarn迁移到pnpm
 
 ```bash
 # 删除旧的node_modules和锁文件
@@ -257,7 +257,7 @@ pnpm install
 pnpm dev
 ```
 
-### 3. 常见问题解决
+### 常见问题解决
 
 **问题1：Volta安装后版本不生效**
 
@@ -275,7 +275,7 @@ pnpm dev
 - 确保使用`volta install`而不是`pnpm install -g`安装全局工具
 - 运行`volta list`查看已安装的全局工具
 
-## 六、总结
+## 总结
 
 Volta+pnpm组合能解决开发中80%的环境和依赖问题：
 

@@ -45,7 +45,7 @@ bootstrap();
 
 逐步拆解：
 
-### 1. NestFactory.create(AppModule)
+### NestFactory.create(AppModule)
 
 创建 Nest 应用实例，加载根模块 `AppModule`。类比 Vue 的 `createApp(App)` —— 从这里开始组装整个应用。
 
@@ -55,7 +55,7 @@ bootstrap();
 >
 > 本项目落点：`main.ts` 把 `AppModule` 作为根模块传入，后续所有 Controller、Service、数据库、Redis、队列都从这里被装配进应用。
 
-### 2. enableCors
+### enableCors
 
 允许跨域。前端 `localhost:5173` 调后端 `localhost:8080` 属于跨域，不加 CORS 浏览器会拦。
 
@@ -67,7 +67,7 @@ bootstrap();
 >
 > 本项目落点：`app.enableCors({ origin: '*' })` 让前端开发环境可以直接请求 `8080` 端口。
 
-### 3. useGlobalPipes(ValidationPipe)
+### useGlobalPipes(ValidationPipe)
 
 **管道（Pipe）**：请求进 Controller 之前，对入参做转换和校验。
 
@@ -82,7 +82,7 @@ bootstrap();
 >
 > 本项目落点：登录、注册、提交题目等 DTO 都会先过全局 `ValidationPipe`，不合法参数不会进入 Service。
 
-### 4. useGlobalFilters(AllExceptionsFilter)
+### useGlobalFilters(AllExceptionsFilter)
 
 **过滤器（Filter）**：任何地方抛异常，统一 catch 成 JSON 返回。
 
@@ -96,7 +96,7 @@ bootstrap();
 { "code": 401, "message": "Token无效或已过期", "data": null }
 ```
 
-### 5. useGlobalInterceptors
+### useGlobalInterceptors
 
 **拦截器（Interceptor）**：包裹 Controller 返回值，做日志、格式包装。
 
@@ -111,7 +111,7 @@ bootstrap();
 >
 > 本项目落点：`LoggingInterceptor` 记录请求耗时，`ResponseInterceptor` 把成功结果包装成统一 JSON，`AllExceptionsFilter` 把异常包装成统一错误 JSON。
 
-### 6. app.listen(8080)
+### app.listen(8080)
 
 开始监听端口。此后每个 HTTP 请求都会走 Nest 的路由分发。
 

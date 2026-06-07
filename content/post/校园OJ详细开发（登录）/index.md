@@ -8,7 +8,7 @@ tags: ["前端开发"]
 
 # 手把手教你理解校园 OJ 登录系统：从输入密码到进入首页
 
-## 一、前言：登录系统的“三件套”
+## 前言：登录系统的“三件套”
 
 想象一下你要进宿舍楼：
 
@@ -18,9 +18,9 @@ tags: ["前端开发"]
 
 我们的登录系统就是这样的三级验证机制！
 
-## 二、核心模块详解
+## 核心模块详解
 
-### 1. Token 管理系统 - `auth.js`（你的电子门禁卡）
+### Token 管理系统 - `auth.js`（你的电子门禁卡）
 
 这个文件专门管理你的“门禁卡”（token）：
 
@@ -55,7 +55,7 @@ export function isAuthenticated() {
 - `TOKEN_KEY` = 卡包里的特定卡槽，只放门禁卡
 - 每次进出，保安只看这个卡槽有没有卡
 
-### 2. 通信专员 - `request.js`（你的专属信使）
+### 通信专员 - `request.js`（你的专属信使）
 
 这个文件负责和**后端服务器**对话，就像你有个专属信使：
 
@@ -124,7 +124,7 @@ request.interceptors.response.use(
 服务器回信 → 信使回来后（拦截器）→ 检查信的内容 → 正常就给你，异常就广播
 ```
 
-### 3. 用户服务接口 - `user.js`（能办的四件事）
+### 用户服务接口 - `user.js`（能办的四件事）
 
 这个文件定义了你能让信使办的**四件事**：
 
@@ -181,7 +181,7 @@ export function getUserInfo() {
 - `request()`就是**让信使按指南办事**
 - 返回值是一个**Promise**（承诺书），承诺会给你结果
 
-### 4. 用户管理中心 - `user.js (store/modules)`（楼长的登记簿）
+### 用户管理中心 - `user.js (store/modules)`（楼长的登记簿）
 
 这里是 Vuex 的**用户模块**，负责管理所有用户相关的全局状态：
 
@@ -274,7 +274,7 @@ const actions = {
 你要改数据 → 调用action → action调用mutation → mutation修改state
 ```
 
-### 5. 快捷访问门 - `getters.js`（快速查询通道）
+### 快捷访问门 - `getters.js`（快速查询通道）
 
 这个文件提供**快速查询**状态的方法：
 
@@ -292,7 +292,7 @@ const getters = {
 - 统一的查询接口，避免拼写错误
 - 可以计算衍生数据（如`isLogin`）
 
-### 6. Vuex 总仓库 - `index.js`（所有登记簿的集合）
+### Vuex 总仓库 - `index.js`（所有登记簿的集合）
 
 这里是 Vuex 的**入口文件**，整合所有模块：
 
@@ -318,7 +318,7 @@ export default createStore({
 - 提交记录放`submission`模块
 - 互不干扰，清晰明了
 
-### 7. 登录页面 - `AppLogin.vue`（前台接待处）
+### 登录页面 - `AppLogin.vue`（前台接待处）
 
 这是用户看到的**登录界面**：
 
@@ -399,7 +399,7 @@ const handleLogin = async () => {
 - `store.dispatch()` - 让楼长办事（异步操作）
 - `router.push()` - 让导航员带路
 
-## 三、完整登录流程（故事版）
+## 完整登录流程（故事版）
 
 让我们跟着"小明"走一遍完整流程：
 
@@ -493,9 +493,9 @@ const handleLogin = async () => {
 4. 保安验证有效，放行到首页
 ```
 
-## 四、关键概念精讲
+## 关键概念精讲
 
-### 1. 什么是 Token？
+### 什么是 Token？
 
 **比喻**：Token 就像酒店的房卡。
 
@@ -504,7 +504,7 @@ const handleLogin = async () => {
 - 退房时（退出登录）收回
 - 过期了要重新办（token 过期）
 
-### 2. localStorage vs sessionStorage
+### localStorage vs sessionStorage
 
 ```
 localStorage（长期钱包）：
@@ -518,7 +518,7 @@ sessionStorage（临时口袋）：
 - 同标签页共享
 ```
 
-### 3. Promise 异步处理
+### Promise 异步处理
 
 **比喻**：叫外卖的过程
 
@@ -547,7 +547,7 @@ async function 吃饭() {
 }
 ```
 
-### 4. Vuex 数据流
+### Vuex 数据流
 
 ```
 单向数据流（必须遵守！）：
@@ -555,7 +555,7 @@ async function 吃饭() {
       （做什么事）       （怎么改）        （改哪里）    （看到变化）
 ```
 
-## 五、常见问题解答
+## 常见问题解答
 
 ### Q1：为什么登录后页面刷新，又变未登录了？
 
@@ -606,7 +606,7 @@ window.addEventListener("storage", (event) => {
 3. 重要操作需要二次验证
 4. 定期更换 token
 
-## 六、登录系统架构总结
+## 登录系统架构总结
 
 ```
 【三层架构】
@@ -628,7 +628,7 @@ window.addEventListener("storage", (event) => {
 5. 界面模块（AppLogin.vue）- 管用户看到什么
 ```
 
-## 七、给新手的黄金法则
+## 给新手的黄金法则
 
 ### 法则 1：先理解流程，再写代码
 
@@ -657,7 +657,7 @@ window.addEventListener("storage", (event) => {
 - 成功后有反馈
 - 记住用户上次操作
 
-## 八、下一步学习方向
+## 下一步学习方向
 
 掌握了登录系统后，你可以继续学习：
 

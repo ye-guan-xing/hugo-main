@@ -19,11 +19,11 @@ tags: ["全栈项目开发", "全栈开发"]
 
 ---
 
-## 🛠️ 阶段一：项目准备与环境搭建
+## 🛠️ 项目准备与环境搭建
 
-### 第 1 步：安装必要软件
+### 安装必要软件
 
-#### 1.1 安装 Node.js（后端运行环境）
+#### 安装 Node.js（后端运行环境）
 
 - 访问：[Node.js](https://nodejs.org)
 - 下载 **LTS 版本**（长期支持版）
@@ -36,7 +36,7 @@ node -v
 
 显示版本号如 `v18.x.x` 即成功！
 
-#### 1.2 安装 Vue CLI（网页管理后台工具）
+#### 安装 Vue CLI（网页管理后台工具）
 
 在 cmd 中继续输入：
 
@@ -46,24 +46,24 @@ npm install -g @vue/cli
 
 等待安装完成（可能需要几分钟）
 
-#### 1.3 安装微信开发者工具（小程序开发）
+#### 安装微信开发者工具（小程序开发）
 
 - 访问：[微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)
 - 下载"稳定版"，安装后用微信扫码登录
 
-#### 1.4 安装 MySQL（数据库）
+#### 安装 MySQL（数据库）
 
 - 访问：[MySQL Community Server](https://dev.mysql.com/downloads/mysql/)
 - 下载 MySQL Community Server
 - 安装时记住设置的**root 密码**（建议设为 `123456`）
 
-#### 1.5 安装 DataGrip（数据库可视化工具）
+#### 安装 DataGrip（数据库可视化工具）
 
 - 访问：[DataGrip](https://www.jetbrains.com/datagrip/)
 - 下载安装，学生可免费使用（用教育邮箱注册）
 - 或使用 30 天免费试用
 
-### 第 2 步：创建项目文件夹结构
+### 创建项目文件夹结构
 
 在 D 盘创建项目文件夹：
 
@@ -74,9 +74,9 @@ D:/life-service/
 └── mini-user/       （微信小程序）
 ```
 
-### 第 3 步：配置 DataGrip 连接数据库
+### 配置 DataGrip 连接数据库
 
-#### 3.1 连接 MySQL
+#### 连接 MySQL
 
 1. 打开 DataGrip，点击 **"New Project"**
 2. 项目名称：`life_service_platform`
@@ -91,7 +91,7 @@ D:/life-service/
 5. 点击 **"Test Connection"**，看到 ✅ **Success** 表示成功
 6. 点击 **"OK"**
 
-#### 3.2 创建数据库
+#### 创建数据库
 
 在 DataGrip 中执行 SQL 创建数据库：
 
@@ -104,7 +104,7 @@ DEFAULT CHARACTER SET utf8mb4
 DEFAULT COLLATE utf8mb4_unicode_ci;
 ```
 
-#### 3.3 创建数据表
+#### 创建数据表
 
 在 DataGrip 中执行以下 SQL 创建表：
 
@@ -145,7 +145,7 @@ CREATE TABLE orders (
 ) COMMENT '订单表';
 ```
 
-#### 3.4 插入测试数据
+#### 插入测试数据
 
 ```sql
 -- 插入测试商家
@@ -164,9 +164,9 @@ INSERT INTO services (merchant_id, name, price, category, stock, status) VALUES
 
 ---
 
-## 💻 阶段二：后端 API 开发（2-3 天）
+## 💻 后端 API 开发（2-3 天）
 
-### 第 1 步：创建后端项目
+### 创建后端项目
 
 1. 打开 cmd，进入 server 文件夹：
 
@@ -186,7 +186,7 @@ npm init -y
 npm install express mysql2 cors nodemon
 ```
 
-### 第 2 步：创建项目文件结构
+### 创建项目文件结构
 
 在 `server` 文件夹中创建以下文件结构：
 
@@ -205,9 +205,9 @@ server/
     └── orderCtrl.js
 ```
 
-### 第 3 步：编写后端代码
+### 编写后端代码
 
-#### 3.1 数据库连接配置 (db/index.js)
+#### 数据库连接配置 (db/index.js)
 
 ```javascript
 const mysql = require("mysql2/promise");
@@ -242,7 +242,7 @@ pool.query("SELECT VERSION() AS version", (err, results) => {
 // pool.end();
 ```
 
-#### 3.2 主入口文件 (app.js)
+#### 主入口文件 (app.js)
 
 ```javascript
 const express = require("express");
@@ -270,7 +270,7 @@ app.listen(8080, () => {
 });
 ```
 
-#### 3.3 商家控制器 (controllers/merchantCtrl.js)
+#### 商家控制器 (controllers/merchantCtrl.js)
 
 - 控制器是实际干活的（像是餐厅的主厨）
 
@@ -351,7 +351,7 @@ exports.approveMerchant = async (req, res) => {
 };
 ```
 
-#### 3.4 商家路由 (routes/merchant.js)
+#### 商家路由 (routes/merchant.js)
 
 ```javascript
 const express = require("express");
@@ -372,7 +372,7 @@ router.put("/approve/:id", merchantCtrl.approveMerchant);
 module.exports = router;
 ```
 
-#### 3.5 服务控制器 (controllers/serviceCtrl.js)
+#### 服务控制器 (controllers/serviceCtrl.js)
 
 ```javascript
 const pool = require("../db");
@@ -471,7 +471,7 @@ exports.unpublishService = async (req, res) => {
 };
 ```
 
-#### 3.6 服务路由 (routes/service.js)
+#### 服务路由 (routes/service.js)
 
 ```javascript
 const express = require("express");
@@ -492,7 +492,7 @@ router.put("/unpublish/:id", serviceCtrl.unpublishService);
 module.exports = router;
 ```
 
-#### 3.7 订单控制器 (controllers/orderCtrl.js)
+#### 订单控制器 (controllers/orderCtrl.js)
 
 ```javascript
 const pool = require("../db");
@@ -565,7 +565,7 @@ exports.getOrders = async (req, res) => {
 };
 ```
 
-#### 3.8 订单路由 (routes/order.js)
+#### 订单路由 (routes/order.js)
 
 ```javascript
 const express = require("express");
@@ -581,7 +581,7 @@ router.get("/list", orderCtrl.getOrders);
 module.exports = router;
 ```
 
-### 第 4 步：配置 package.json 脚本
+### 配置 package.json 脚本
 
 修改 `server/package.json` 中的 `scripts` 部分：
 
@@ -594,7 +594,7 @@ module.exports = router;
 }
 ```
 
-### 第 5 步：启动后端服务
+### 启动后端服务
 
 ```bash
 cd D:/life-service/server
@@ -603,7 +603,7 @@ npm run dev
 
 看到 `✅ 后端服务启动成功！` 表示后端正常运行。
 
-### 第 6 步：测试后端 API
+### 测试后端 API
 
 使用 Postman 或浏览器测试接口：
 
@@ -612,9 +612,9 @@ npm run dev
 
 ---
 
-## 🌐 阶段三：Web 管理后台开发（3-4 天）
+## 🌐 Web 管理后台开发（3-4 天）
 
-### 第 1 步：创建 Vue 项目
+### 创建 Vue 项目
 
 1. 打开新的 cmd 窗口：
 
@@ -637,7 +637,7 @@ cd web-admin
 npm install axios
 ```
 
-### 第 2 步：项目结构配置
+### 项目结构配置
 
 在 `src` 文件夹中创建以下结构：
 
@@ -659,7 +659,7 @@ src/
     └── index.js
 ```
 
-### 第 3 步：配置路由
+### 配置路由
 
 修改 `src/router/index.js`：
 
@@ -711,7 +711,7 @@ const router = createRouter({
 export default router;
 ```
 
-### 第 4 步：封装 API 请求
+### 封装 API 请求
 
 创建 `src/api/merchant.js`：
 
@@ -785,7 +785,7 @@ export const orderAPI = {
 export default orderAPI;
 ```
 
-### 第 5 步：开发商家管理页面
+### 开发商家管理页面
 
 创建 `src/views/Merchant/index.vue`：
 
@@ -1159,7 +1159,7 @@ export default {
 </style>
 ```
 
-### 第 6 步：修改 App.vue
+### 修改 App.vue
 
 更新 `src/App.vue`：
 
@@ -1247,7 +1247,7 @@ body {
 </style>
 ```
 
-### 第 7 步：开发服务管理页面
+### 开发服务管理页面
 
 创建 `src/views/Service/index.vue`：
 
@@ -1568,7 +1568,7 @@ export default {
 </style>
 ```
 
-### 第 8 步：开发订单管理页面
+### 开发订单管理页面
 
 创建 `src/views/Order/index.vue`：
 
@@ -1743,7 +1743,7 @@ export default {
 </style>
 ```
 
-### 第 9 步：启动 Web 管理后台
+### 启动 Web 管理后台
 
 - 注意此时，还有前后端跨域问题（用 cores 或者 nginx 代理解决）
 - PS（我会在后续的文章中解决）
@@ -1757,9 +1757,9 @@ npm run serve
 
 ---
 
-## 📱 阶段四：微信小程序开发（3-4 天）
+## 📱 微信小程序开发（3-4 天）
 
-### 第 1 步：创建小程序项目
+### 创建小程序项目
 
 1. 打开微信开发者工具
 2. 点击"新建项目"
@@ -1770,7 +1770,7 @@ npm run serve
    - 后端服务：不使用云服务
 4. 点击"新建"
 
-### 第 2 步：项目结构配置
+### 项目结构配置
 
 在小程序项目中创建以下结构：
 
@@ -1787,7 +1787,7 @@ mini-user/
 └── app.js（小程序入口）
 ```
 
-### 第 3 步：封装网络请求
+### 封装网络请求
 
 创建 `utils/request.js`：
 
@@ -1815,7 +1815,7 @@ const request = (url, method = "GET", data = {}) => {
 module.exports = request;
 ```
 
-### 第 4 步：配置小程序页面
+### 配置小程序页面
 
 修改 `app.json`：
 
@@ -1838,7 +1838,7 @@ module.exports = request;
 }
 ```
 
-### 第 5 步：开发首页
+### 开发首页
 
 创建 `pages/index/index.js`：
 
@@ -2133,7 +2133,7 @@ Page({
 }
 ```
 
-### 第 6 步：开发服务列表页面
+### 开发服务列表页面
 
 创建 `pages/serviceList/serviceList.js`：
 
@@ -2402,7 +2402,7 @@ Page({
 }
 ```
 
-### 第 7 步：开发创建订单页面
+### 开发创建订单页面
 
 创建 `pages/orderCreate/orderCreate.js`：
 
@@ -2703,7 +2703,7 @@ Page({
 }
 ```
 
-### 第 8 步：开发订单列表页面
+### 开发订单列表页面
 
 创建 `pages/orderList/orderList.js`：
 
@@ -2919,7 +2919,7 @@ Page({
 }
 ```
 
-### 第 9 步：配置小程序入口
+### 配置小程序入口
 
 修改 `app.js`：
 
@@ -2937,9 +2937,9 @@ App({
 
 ---
 
-## 🧪 阶段五：集成测试与上线
+## 🧪 集成测试与上线
 
-### 第 1 步：完整流程测试
+### 完整流程测试
 
 #### 测试流程：
 
@@ -2965,7 +2965,7 @@ App({
    - 小程序：浏览服务 → 下单
    - Web 端：查看订单
 
-### 第 2 步：代码优化
+### 代码优化
 
 #### 后端优化：
 
@@ -2979,7 +2979,7 @@ App({
 2. 错误边界处理
 3. 表单验证加强
 
-### 第 3 步：部署准备
+### 部署准备
 
 #### 整理项目文档：
 
@@ -3021,7 +3021,7 @@ App({
 2. 点击预览
 ```
 
-### 第 4 步：Git 版本控制
+### Git 版本控制
 
 ```bash
 # 初始化Git

@@ -2,7 +2,7 @@
 draft: false
 date: 2025-12-14 22:36:00
 title: "如何将vue cli 写的前端文件转换为vite（详细板）"
-categories: ["web开发", "开发问题精讲"]
+categories: ["web开发"]
 tags: ["项目开发"]
 ---
 
@@ -14,14 +14,14 @@ tags: ["项目开发"]
 
 ## 🗺️ 迁移路线图
 
-### **步骤 1：备份原有项目**
+### 备份原有项目**
 
 ```bash
 # 在开始前一定要备份
 cp -r my-project my-project-backup
 ```
 
-### **步骤 2：删除旧配置文件**
+### 删除旧配置文件**
 
 ```bash
 # 删除 Vue CLI 相关配置文件
@@ -30,7 +30,7 @@ rm babel.config.js  # 如果存在
 rm .eslintrc.js     # 如果使用单独的配置文件
 ```
 
-### **步骤 3：清理项目依赖**
+### 清理项目依赖**
 
 ```bash
 # 删除 node_modules 和锁文件
@@ -40,7 +40,7 @@ rm package-lock.json  # 或 rm yarn.lock
 
 ## 📝 详细步骤说明
 
-### **1. 修改 package.json**
+### 修改 package.json**
 
 **主要变化：**
 
@@ -75,7 +75,7 @@ rm package-lock.json  # 或 rm yarn.lock
 - `type: "module"` 让 Node.js 支持 ES6 模块语法
 - Vite 的命令更简洁直观
 
-### **2. 配置文件迁移**
+### 配置文件迁移**
 
 **从 `vue.config.js` 到 `vite.config.js`**
 
@@ -113,7 +113,7 @@ export default defineConfig({
 - 配置结构更扁平
 - 热更新速度显著提升
 
-### **3. 环境变量处理**
+### 环境变量处理**
 
 **Vue CLI 方式：**
 
@@ -146,7 +146,7 @@ envPrefix: ["VUE_APP_", "VITE_"],
   import.meta.env.VUE_APP_BASE_API;
 ```
 
-### **4. 请求配置文件修改**
+### 请求配置文件修改**
 
 **修改 `src/utils/request.js`（或类似文件）：**
 
@@ -170,7 +170,7 @@ const service = axios.create({
 - 只有以 `VITE_` 或配置的前缀开头的变量才会被暴露
 - 环境变量在构建时被替换
 
-### **5. HTML 文件处理**
+### HTML 文件处理**
 
 **Vue CLI：**
 
@@ -212,7 +212,7 @@ src/
 </html>
 ```
 
-### **6. 静态资源引用方式**
+### 静态资源引用方式**
 
 **Vue CLI：**
 
@@ -238,7 +238,7 @@ import logoUrl from '@/assets/logo.png';
 <img src="/logo.png" />  // 放在 public/logo.png
 ```
 
-### **7. 路径别名配置**
+### 路径别名配置**
 
 **vite.config.js 中配置：**
 
@@ -258,7 +258,7 @@ export default defineConfig({
 
 ## 🔧 常见问题解决
 
-### **问题 1：CommonJS 模块报错**
+### CommonJS 模块报错**
 
 ```javascript
 // 错误：require is not defined
@@ -268,7 +268,7 @@ const module = require("module");
 import module from "module";
 ```
 
-### **问题 2：process 变量报错**
+### process 变量报错**
 
 ```javascript
 // 错误：process is not defined
@@ -280,7 +280,7 @@ if (import.meta.env.MODE === "development") {
 }
 ```
 
-### **问题 3：CSS 预处理器错误**
+### CSS 预处理器错误**
 
 ```javascript
 // vite.config.js 中正确配置
@@ -303,32 +303,32 @@ export default defineConfig({
 
 echo "🚀 开始迁移 Vue CLI 到 Vite..."
 
-# 1. 备份
+# 备份
 echo "📦 备份原项目..."
 cp -r ./ ./backup-$(date +%Y%m%d-%H%M%S)
 
-# 2. 删除旧文件
+# 删除旧文件
 echo "🗑️  删除旧配置文件..."
 rm -f vue.config.js
 rm -f babel.config.js
 
-# 3. 清理依赖
+# 清理依赖
 echo "🧹 清理 node_modules..."
 rm -rf node_modules
 rm -f package-lock.json
 
-# 4. 移动 HTML 文件
+# 移动 HTML 文件
 echo "📄 移动 HTML 文件..."
 if [ -f "public/index.html" ]; then
     mv public/index.html ./
     rm -rf public
 fi
 
-# 5. 更新 package.json
+# 更新 package.json
 echo "📝 更新 package.json..."
 # 这里可以编写 sed 命令或手动修改
 
-# 6. 创建 vite.config.js
+# 创建 vite.config.js
 echo "⚙️  创建 Vite 配置文件..."
 cat > vite.config.js << 'EOF'
 import { defineConfig } from "vite";

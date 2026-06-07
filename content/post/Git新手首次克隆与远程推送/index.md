@@ -7,14 +7,14 @@ categories: ["Git 新手通关指南"]
 
 # Git 新手第一次使用：克隆、配置远程与首次推送
 
-## 1. 克隆仓库到本地
+## 克隆仓库到本地
 
 ```bash
 git clone https://github.com/username/repo.git
 cd repo
 ```
 
-## 2. 查看当前远程仓库地址
+## 查看当前远程仓库地址
 
 ```bash
 git remote -v
@@ -25,7 +25,7 @@ git remote -v
 - `origin  https://github.com/username/repo.git (fetch)`
 - `origin  https://github.com/username/repo.git (push)`
 
-## 3. 设置或修改远程仓库地址
+## 设置或修改远程仓库地址
 
 ### 场景 A：已经有 `origin`，只想修改地址
 
@@ -45,7 +45,7 @@ git remote add origin https://github.com/yourname/new-repo.git
 git remote -v
 ```
 
-## 4. 首次提交并推送
+## 首次提交并推送
 
 先把改动提交到本地仓库：
 
@@ -73,7 +73,7 @@ git push
 git pull
 ```
 
-## 5. 常见检查命令
+## 常见检查命令
 
 ```bash
 git status
