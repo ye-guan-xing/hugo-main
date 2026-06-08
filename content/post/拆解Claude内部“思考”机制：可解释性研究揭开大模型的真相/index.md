@@ -3,6 +3,7 @@ draft: false
 date: 2026-06-05 00:00:00
 title: "拆解Claude内部“思考”机制：可解释性研究揭开大模型的真相"
 categories: ["AI coding 思考和经验"]
+math: true
 ---
 
 # 引言

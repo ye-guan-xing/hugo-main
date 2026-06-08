@@ -1,0 +1,12 @@
+{{- $hasMath := or .Params.math .Site.Params.article.math (gt (len (findRE `(?s)(\$\$.*?\$\$|\\\[.*?\\\])` .RawContent)) 0) -}}
+<article class="{{ if .Params.image }}has-image {{ end }}main-article">
+    {{ partial "article/components/header" . }}
+
+    {{ partial "article/components/content" . }}
+
+    {{ partial "article/components/footer" . }}
+
+    {{ if $hasMath }}
+        {{ partialCached "article/components/math.html" . }}
+    {{ end }}
+</article>

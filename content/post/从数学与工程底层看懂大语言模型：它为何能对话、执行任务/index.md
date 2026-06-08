@@ -3,6 +3,7 @@ draft: false
 date: 2026-06-04 00:00:00
 title: "从数学与工程底层看懂大语言模型：它为何能对话、执行任务"
 categories: ["AI coding 思考和经验"]
+math: true
 ---
 
 ## 引言
