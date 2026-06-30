@@ -1,6 +1,7 @@
 ---
 draft: flase
 date: 2026-05-21 01:00:00
+slug: "frontend-to-backend"
 title: "前端如何快进后端"
 categories: ["后端开发"]
 ---

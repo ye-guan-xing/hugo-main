@@ -1,6 +1,7 @@
 ---
 draft: false
 date: 2025-10-20 16:36:00
+slug: "lifestyle-platform-development"
 title: "全域生活服务平台开发流程详解"
 categories: ["web开发"]
 tags: ["全栈项目开发", "全栈开发"]

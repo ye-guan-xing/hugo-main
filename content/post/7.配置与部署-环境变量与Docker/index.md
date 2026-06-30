@@ -1,6 +1,7 @@
 ---
 draft: flase
 date: 2026-05-28 01:00:00
+slug: "docker-deployment-config"
 title: "7.配置与部署-环境变量与Docker"
 categories: ["后端开发"]
 ---

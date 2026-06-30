@@ -1,6 +1,7 @@
 ---
 draft: false
 date: 2025-11-29 22:36:00
+slug: "cors-issue"
 title: "跨域问题讲解"
 categories: ["web开发"]
 tags: ["项目开发"]

@@ -1,6 +1,7 @@
 ---
 draft: false
 date: 2025-12-05 18:36:00 +08:00
+slug: "campus-oj-login"
 title: "校园OJ项目的详细开发(登录界面)"
 categories: ["校园OJ开发", "web开发"]
 tags: ["前端开发"]

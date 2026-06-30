@@ -1,6 +1,7 @@
 ---
 draft: flase
 date: 2026-05-25 01:00:00
+slug: "typeorm-database-orm"
 title: "4.数据库与 ORM：TypeORM 实战"
 categories: ["后端开发"]
 ---

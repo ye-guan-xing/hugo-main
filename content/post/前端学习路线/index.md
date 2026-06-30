@@ -1,6 +1,7 @@
 ---
 draft: false
 date: 2026-02-13 16:36:00 
+slug: "frontend-learning-path"
 title: "前端学习路线：从入门到进阶"
 categories: ["学习路线"]
 ---

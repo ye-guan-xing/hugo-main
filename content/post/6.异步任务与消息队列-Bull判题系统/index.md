@@ -1,6 +1,7 @@
 ---
 draft: flase
 date: 2026-05-27 01:00:00
+slug: "bull-async-task-queue"
 title: "6.异步任务与消息队列-Bull判题系统"
 categories: ["后端开发"]
 ---

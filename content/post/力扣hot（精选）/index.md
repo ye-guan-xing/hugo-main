@@ -1,6 +1,7 @@
 ---
 draft: flase
 date: 2025-11-28 8:36:00
+slug: "leetcode-hot150"
 title: "力扣hot150(精讲)"
 categories: ["算法"]
 tags: ["C++"]

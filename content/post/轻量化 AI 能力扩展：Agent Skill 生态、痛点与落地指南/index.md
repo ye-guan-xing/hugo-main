@@ -1,6 +1,7 @@
 ---
 draft: false
 date: 2026-06-03 00:00:00
+slug: "agent-skill-guide"
 title: "轻量化 AI 能力扩展：Agent Skill 生态、痛点与落地指南"
 categories: ["AI coding 思考和经验"]
 ---

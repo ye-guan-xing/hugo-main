@@ -1,6 +1,7 @@
 ---
 draft: flase
 date: 2026-05-26 01:00:00
+slug: "auth-token-redis"
 title: "5.认证与会话-Token和Redis"
 categories: ["后端开发"]
 ---

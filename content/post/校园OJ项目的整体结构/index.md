@@ -1,6 +1,7 @@
 ---
 draft: false
 date: 2025-12-05 17:36:00 +08:00
+slug: "campus-oj-structure"
 title: "校园OJ项目的整体结构"
 categories: ["校园OJ开发", "web开发"]
 tags: ["前端开发"]

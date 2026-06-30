@@ -1,6 +1,7 @@
 ---
 draft: false
 date: 2025-12-06T12:36:00+08:00
+slug: "campus-oj-layout"
 title: "校园OJ开发之布局逻辑"
 categories: ["web开发", 校园OJ开发]
 tags: ["前端开发"]

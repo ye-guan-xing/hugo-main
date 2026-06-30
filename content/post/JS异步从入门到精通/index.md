@@ -1,6 +1,7 @@
 ---
 draft: false
 date: 2026-05-19 00:00:00
+slug: "javascript-async"
 title: "JS异步从入门到精通"
 categories: ["JS基础"]
 ---
