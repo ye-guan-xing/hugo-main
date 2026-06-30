@@ -1,6 +1,7 @@
 ---
 draft: flase
 date: 2026-05-22 01:00:00
+slug: "backend-service-startup"
 title: "1.从 main.ts 看一个后端服务如何启动"
 categories: ["后端开发"]
 ---

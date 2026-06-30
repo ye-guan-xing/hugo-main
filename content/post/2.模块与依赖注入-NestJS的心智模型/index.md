@@ -1,6 +1,7 @@
 ---
 draft: flase
 date: 2026-05-23 02:00:00
+slug: "nestjs-dependency-injection"
 title: "2.模块与依赖注入：NestJS 的心智模型"
 categories: ["后端开发"]
 ---

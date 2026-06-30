@@ -1,6 +1,7 @@
 ---
 draft: flase
 date: 2026-05-24 01:00:00
+slug: "request-lifecycle"
 title: "3.一个请求的完整生命周期"
 categories: ["后端开发"]
 ---

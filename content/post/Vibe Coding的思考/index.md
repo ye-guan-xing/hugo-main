@@ -1,6 +1,7 @@
 ---
 draft: false
 date: 2026-06-01 00:00:00
+slug: "vibe-coding"
 title: "规范先行：我的 Vibe Coding 落地方案"
 categories: ["AI coding 思考和经验"]
 ---

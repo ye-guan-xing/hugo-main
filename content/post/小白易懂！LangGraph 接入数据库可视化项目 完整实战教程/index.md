@@ -1,6 +1,7 @@
 ---
 draft: false
 date: 2026-05-20 16:36:00
+slug: "langgraph-database-tutorial"
 title: "小白易懂！LangGraph 接入数据库可视化项目 完整实战教程"
 categories: ["LangGragh"]
 ---

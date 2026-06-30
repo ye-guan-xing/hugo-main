@@ -1,6 +1,7 @@
 ---
 draft: false
 date: 2026-02-13 17:00:00 +08:00
+slug: "backend-learning-path"
 title: "后端学习路线：从基础到架构"
 categories: ["学习路线"]
 ---

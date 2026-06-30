@@ -1,6 +1,7 @@
 ---
 draft: flase
 date: 2026-04-10 01:00:00
+slug: "leetcode-hot100-part3"
 title: "力扣hot100(精讲三)"
 categories: ["算法"]
 tags: ["C++"]

@@ -1,6 +1,7 @@
 ---
 draft: false
 date: 2026-05-15 17:00:00 +08:00
+slug: "volta-pnpm-development-workflow"
 title: "从 10 分钟到 10 秒：Volta+pnpm 如何重构你的开发流程"
 categories: ["工程优化"]
 ---

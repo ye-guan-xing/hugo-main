@@ -2,6 +2,7 @@
 draft: false
 date: 2026-06-15 00:00:00
 title: "Cursor 进阶实战：核心高级能力全解 + 配套标准化AI开发范式体系"
+slug: "cursor-advanced-practice"
 categories: ["AI coding 思考和经验"]
 ---
 ## 前言

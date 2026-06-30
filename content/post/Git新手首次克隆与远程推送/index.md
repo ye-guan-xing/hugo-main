@@ -1,6 +1,7 @@
 ---
 draft: false
 date: 2026-04-01 00:00:00
+slug: "git-clone-remote-push"
 title: "Git 新手第一次使用：克隆、配置远程与首次推送"
 categories: ["Git 新手通关指南"]
 ---

@@ -1,6 +1,7 @@
 ---
 draft: flase
 date: 2026-04-05 01:00:00
+slug: "dfs-bfs"
 title: "dfs和bfs的讲解(新手向)"
 categories: ["算法"]
 tags: ["C++"]

@@ -1,6 +1,7 @@
 ---
 draft: false
 date : '2025-10-20T16:36:32+08:00'
+slug: "freshman-learning-path-software"
 title : '大一的学习路径（软件篇）'
 categories: ["学习路线"]
 ---

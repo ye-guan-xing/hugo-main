@@ -1,6 +1,7 @@
 ---
 draft: flase
 date: 2025-11-30 12:36:00
+slug: "campus-oj-admin"
 title: "校园OJ开发之admin页面的开发"
 categories: ["校园OJ开发", "web开发"]
 tags: ["前端开发"]

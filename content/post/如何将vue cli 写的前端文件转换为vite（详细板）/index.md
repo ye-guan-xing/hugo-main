@@ -1,6 +1,7 @@
 ---
 draft: false
 date: 2025-12-14 22:36:00
+slug: "vue-cli-to-vite-migration"
 title: "如何将vue cli 写的前端文件转换为vite（详细板）"
 categories: ["web开发"]
 tags: ["项目开发"]

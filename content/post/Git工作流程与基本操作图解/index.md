@@ -1,6 +1,7 @@
 ---
 draft: false
 date: 2026-03-31 10:00:00
+slug: "git-workflow-basic-operations"
 title: "Git 工作流程与基本操作图解"
 categories: ["Git 新手通关指南"]
 ---

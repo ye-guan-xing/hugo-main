@@ -1,6 +1,7 @@
 ---
 draft: flase
 date: 2026-01-13T10:30:00+08:00
+slug: "git-branch-sync"
 title: "解决master与开发分支代码不一致,手把手教你同步分支"
 categories: ["Git 新手通关指南"]
 ---

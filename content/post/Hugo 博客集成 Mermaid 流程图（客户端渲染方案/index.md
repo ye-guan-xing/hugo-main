@@ -1,6 +1,7 @@
 ---
 draft: flase
 date: 2026-05-29 01:00:00
+slug: "hugo-mermaid-client-side"
 title: "Hugo 博客集成 Mermaid 流程图（客户端渲染方案)"
 categories: ["web开发"]
 ---
