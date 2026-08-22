@@ -38,6 +38,10 @@ permalinks:
   post: /p/:slug/
   page: /:slug/
 
+# 避免 content 下的 .claude 被当成文章（无 date 会显示成 0001）
+ignoreFiles:
+  - '\.claude'
+
 params:
   mainSections:
     - post
