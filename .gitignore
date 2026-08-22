@@ -2,3 +2,7 @@ public
 resources
 .hugo bulid.lock
 hugo.exe
+assets/jsconfig.json
+
+# Claude 规则文件，不是博客文章
+.claude/
