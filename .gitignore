@@ -6,3 +6,6 @@ assets/jsconfig.json
 
 # Claude 规则文件，不是博客文章
 .claude/
+
+# CI 生成的浏览量数据，不入库
+data/pageviews.json
