@@ -1,0 +1,39 @@
+{{ define "main" }}
+    {{ $pv := .Site.Data.pageviews }}
+    {{ $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
+    {{ $notHidden := where .Site.RegularPages "Params.hidden" "!=" true }}
+    {{ $filtered := ($pages | intersect $notHidden) }}
+
+    {{ $items := slice }}
+    {{ range $filtered }}
+        {{ $c := index $pv .RelPermalink | default 0 }}
+        {{ $items = $items | append (dict "count" $c "page" .) }}
+    {{ end }}
+    {{ $sorted := sort $items "count" "desc" }}
+
+    {{ $pagesSorted := slice }}
+    {{ range $sorted }}
+        {{ $pagesSorted = $pagesSorted | append .page }}
+    {{ end }}
+    {{ $pag := .Paginate $pagesSorted }}
+
+    <header>
+        <div class="sort-tabs" style="display:flex;gap:.6rem;margin-bottom:1.5rem">
+            <a href="/" style="padding:.4em 1em;border-radius:999px;font-size:.85em;font-weight:500;background:transparent;color:var(--body-text-color,#666);border:1px solid var(--border-color,#ccc);opacity:.85;text-decoration:none">按时间</a>
+            <a href="/hot/" style="padding:.4em 1em;border-radius:999px;font-size:.85em;font-weight:600;background:var(--accent-color,#3273dc);color:#fff;border:1px solid transparent;text-decoration:none">按浏览量</a>
+        </div>
+    </header>
+
+    <section class="article-list">
+        {{ range $index, $element := $pag.Pages }}
+            {{ partial "article-list/default" . }}
+        {{ end }}
+    </section>
+
+    {{- partial "pagination.html" . -}}
+    {{- partial "footer/footer" . -}}
+{{ end }}
+
+{{ define "right-sidebar" }}
+    {{ partial "sidebar/right.html" (dict "Context" . "Scope" "homepage") }}
+{{ end }}

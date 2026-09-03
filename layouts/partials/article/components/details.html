@@ -50,20 +50,16 @@
 
     <div>
       {{ partial "helper/icon" "view" }}
-      <time class="article-pageview">
-        <span class="waline-pageview-count" data-path="{{ .RelPermalink }}"
-          >0</span
-        >
+      <time class="article-pageview" style="display:none">
+        <span class="waline-pageview-count" data-path="{{ .RelPermalink }}"></span>
         visits
       </time>
     </div>
 
     <div>
       {{ partial "helper/icon" "comment" }}
-      <time class="article-comment">
-        <span class="waline-comment-count" data-path="{{ .RelPermalink }}"
-          >0</span
-        >
+      <time class="article-comment" style="display:none">
+        <span class="waline-comment-count" data-path="{{ .RelPermalink }}"></span>
         comments
       </time>
     </div>
