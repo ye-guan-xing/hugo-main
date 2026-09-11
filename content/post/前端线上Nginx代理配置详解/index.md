@@ -3,8 +3,8 @@ draft: false
 date: 2026-09-03 10:10:00
 slug: "frontend-online-nginx-proxy"
 title: "前端线上Nginx代理配置详解"
-categories: ["web开发"]
-tags: ["Nginx","Docker","项目开发"]
+categories: ["web开发", "工程化"]
+tags: ["Nginx","Docker","项目开发","工程化"]
 description: "线上环境里 nginx 跑在前端容器内，靠 RUN_ENV 切换配置文件、靠 location 把相对路径转发到后端，再到网关、Spring Boot。本文拆解这条链路。"
 ---
 
