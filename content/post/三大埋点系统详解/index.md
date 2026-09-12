@@ -84,15 +84,15 @@ LogTrack.track(trackObj, eventType)
 | `'autoTrack'` | 路由自动曝光 | 仅 App 根组件自动调用，业务别用 |
 
 ### 调用样例
-知识卡页面组件：
+内容卡页面组件：
 
 ```js
 import { LogTrack } from '@/utils';
 // ...
 LogTrack.track({
-  page_name: '知识卡',
+  page_name: '内容卡',
   page_type: 2,
-  page_title: '知识卡',
+  page_title: '内容卡',
   url: window.location.href,
   module_name: '导航栏',
   item_name: '返回按钮',
@@ -119,7 +119,7 @@ const logTrackInstance = logTrackFactory(
   {
     initConfig: { enable_native: false },
     enableOutAPP: false,                                   // ← 关键：浏览器 H5 不跑
-    requestAutoTrackParams: { classKey: 'web_auto_track', itemKey: 'project_H5' }
+    requestAutoTrackParams: { classKey: 'web_auto', itemKey: 'project_H5' }
   }
 );
 logTrackInstance.init();
@@ -158,26 +158,26 @@ flowchart LR
 this.$tracker(eventName, params)
 ```
 
-- `eventName`：自定义事件名，统一加 `sndd_hs_` 前缀
+- `eventName`：自定义事件名，统一加 `biz_hs_` 前缀
 - `params`：参数对象
 
 ### 常见事件名（来自真实代码）
 
 | 事件名 | 含义 |
 |---|---|
-| `sndd_hs_page` | 页面曝光 / 时长 |
-| `sndd_hs_show` | 元素展示 |
-| `sndd_hs_click` | 点击 |
-| `sndd_hs_knowledge_publishing_course_play` | 音频播放时长 |
-| `sndd_hs_h5_campaign_view` | 活动页曝光 |
-| `sndd_hs_h5_info_click` | 活动信息点击 |
+| `biz_hs_page` | 页面曝光 / 时长 |
+| `biz_hs_show` | 元素展示 |
+| `biz_hs_click` | 点击 |
+| `biz_hs_knowledge_publishing_course_play` | 音频播放时长 |
+| `biz_hs_h5_campaign_view` | 活动页曝光 |
+| `biz_hs_h5_info_click` | 活动信息点击 |
 
 ### 什么时候用
 - 业务方明确要求事件进**火山 / DataFinder** 后台时
 - 需要和 App 原生埋点对齐口径的自定义事件
 - 音频 / 视频播放时长这类特殊采集
 
-> 日常页面埋点**不要**随手用 `$tracker`，优先用 ① LogTrack。只有需求文档点名要 `sndd_hs_xxx` 事件时才用。
+> 日常页面埋点**不要**随手用 `$tracker`，优先用 ① LogTrack。只有需求文档点名要 `biz_hs_xxx` 事件时才用。
 
 ---
 
@@ -231,7 +231,7 @@ this.$timeTrack('homeActivityPageDataLoad');     // 首页数据加载完
 | 后台 | 神策 + 自研日志 | 火山 Rangers | 性能后台 |
 | 生效环境 | 全环境 | **仅 App 内** | 全环境 |
 | 调用 | `LogTrack.track(obj, type)` | `this.$tracker(name, params)` | `this.$timeTrack(label)` |
-| 事件类型 | page/show/click/autoTrack | 自定义 `sndd_hs_*` | 计时标签 |
+| 事件类型 | page/show/click/autoTrack | 自定义 `biz_hs_*` | 计时标签 |
 | 用途 | 业务埋点（主力） | 自定义事件 / 播放时长 | 性能监控 |
 | 占比 | ~90% | ~9% | ~1% |
 

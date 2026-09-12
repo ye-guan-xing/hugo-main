@@ -33,10 +33,10 @@ flowchart LR
 ```
 事件：click               ← 用户点了"立即订阅"按钮
 参数：
-  page_name   = 少年闻天下   ← 在哪个页面
+  page_name   = 每日资讯   ← 在哪个页面
   module_name = 底部购买栏   ← 页面哪个模块
   btn_name    = 立即订阅     ← 具体哪个按钮
-  key1        = {"user_status":"member","price":99}  ← 其它细节，打包成 JSON
+  key1        = {"user_status":"member","price":1}  ← 其它细节，打包成 JSON
 ```
 
 后台拿到这条数据，就能回答："有多少人点了立即订阅？会员和非会员各点多少？"
@@ -45,7 +45,7 @@ flowchart LR
 
 | 场景 | 例子 | 事件类型 |
 |---|---|---|
-| 用户打开一个页面 | 进了"少年闻天下"页 | `page` 页面曝光 |
+| 用户打开一个页面 | 进了"每日资讯"页 | `page` 页面曝光 |
 | 页面上某个东西展示出来了 | 课程列表加载出来了 | `show` 元素展示 |
 | 用户点了一下 | 点了返回、点了课程项 | `click` 点击 |
 | 用户停在这个页面多久 | 看了 30 秒新闻 | `page` + duration 时长 |
@@ -125,14 +125,14 @@ flowchart TB
 | 系统 | 调用样子 | 发给谁 | 一句话定位 |
 |---|---|---|---|
 | ① LogTrack | `LogTrack.track({...}, 'click')` | 神策 + 自研日志 | **主系统**，绝大多数埋点用它 |
-| ② $tracker | `this.$tracker('sndd_hs_xxx', {...})` | 火山引擎 Rangers | 仅 App 内生效，自定义事件名 |
+| ② $tracker | `this.$tracker('biz_hs_xxx', {...})` | 火山引擎 Rangers | 仅 App 内生效，自定义事件名 |
 | ③ $timeTrack | `this.$timeTrack('appCreated')` | 性能后台 | 测启动 / 加载耗时，不是业务埋点 |
 
 > 新手记住：**90% 的业务埋点用的是 ① LogTrack**。② ③ 是特殊场景才用。下一篇详细讲这三套。
 
 ## 埋点代码长什么样（先看个直观例子）
 
-知识卡页面组件里点"返回按钮"的埋点：
+内容卡页面组件里点"返回按钮"的埋点：
 
 ```js
 goToBack() {
@@ -140,7 +140,7 @@ goToBack() {
     other: { module_name: '导航栏', item_name: '返回按钮', btn_name: '返回' }
   });
   if (env.isApp) {
-    JS2Native({ name: 'closeWindow' });     // 真正的业务动作：关 webview
+    callNative({ name: 'closeWindow' });     // 真正的业务动作：关 webview
   } else {
     this.$router.back();
   }

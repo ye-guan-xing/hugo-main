@@ -47,7 +47,7 @@ import { LogTrack } from '@/utils';
 
 // 点击返回
 LogTrack.track({
-  page_name: '少年闻天下', page_type: 2, page_title: '少年闻天下',
+  page_name: '每日资讯', page_type: 2, page_title: '每日资讯',
   url: window.location.href,
   module_name: '导航栏', item_name: '返回按钮', btn_name: '返回',
   key1: JSON.stringify({ user_status: 'member' })
@@ -56,7 +56,7 @@ LogTrack.track({
 
 **特征**：每次埋点手写完整字段，调 `LogTrack.track(obj, eventType)`。
 
-**代表文件**：少年闻天下订阅页（一个文件 23 处）、兑换课程页（12 处）、每日问答页（12 处）。
+**代表文件**：每日资讯订阅页（一个文件 23 处）、兑换课程页（12 处）、每日问答页（12 处）。
 
 **适用**：埋点不多的页面，直接写最清楚。
 
@@ -67,16 +67,16 @@ LogTrack.track({
 **问题**：一个页面有十几个埋点，每次都写 `page_name/page_type/page_title/url` 太啰嗦，改一处要改十几处。
 **解法**：在组件里封一个 `track` 方法，把公共字段固定下来，只传变化的部分。
 
-知识卡页面组件：
+内容卡页面组件：
 
 ```js
 methods: {
   // 通用埋点：公共字段写死，扩展数据合并进 key1
   track(extra = {}, eventType = 'click') {
     LogTrack.track({
-      page_name: '知识卡',
+      page_name: '内容卡',
       page_type: 2,
-      page_title: '知识卡',
+      page_title: '内容卡',
       url: window.location.href,
       main_item_id: '',
       key1: JSON.stringify({
@@ -97,7 +97,7 @@ methods: {
 
 **特征**：`this.track({ other: {...}, key1Data: {...} }, 'click')`，把字段拆成"固定的"和"变化的"两层。
 
-**适用**：单页面埋点 ≥ 5 处，字段重复多。知识卡列表页、知识卡详情页都用这种。
+**适用**：单页面埋点 ≥ 5 处，字段重复多。内容卡列表页、内容卡详情页都用这种。
 
 ---
 
@@ -111,8 +111,8 @@ methods: {
 ```js
 commLog(event, options) {
   var config = options || {};
-  // ① 发火山（新口径，事件名 sndd_hs_xxx）
-  this.$tracker('sndd_hs_' + event, this.getTrackerBaseData(config.trackerData));
+  // ① 发火山（新口径，事件名 biz_hs_xxx）
+  this.$tracker('biz_hs_' + event, this.getTrackerBaseData(config.trackerData));
   // ② 发神策+自研（老口径，事件类型 page/show/click）
   LogTrack.track(Object.assign({}, this.getLogTrackBaseData(config.logData), {
     key1: JSON.stringify({ /* ... */ })
@@ -150,9 +150,9 @@ commLog(event, options) {
 
 ```mermaid
 flowchart LR
-    A["v-log:click={...} 写在模板"] --> B["指令把数据存到 dom.dataset.igc_log"]
+    A["v-log:click={...} 写在模板"] --> B["指令把数据存到 dom.dataset.app_log"]
     B --> C["document.body 监听 click 冒泡"]
-    C --> D["点击时找到带 igc_log 的元素"]
+    C --> D["点击时找到带 app_log 的元素"]
     D --> E["内部调 LogTrack.track()"]
     style E fill:#2d4a6b,color:#fff,stroke:#4a90d9
 ```
@@ -211,7 +211,7 @@ created() {
 
 **特征**：`LogTrack.track({}, 'autoTrack', true, routes)`，第 3、4 个参数是 autoTrack 专用。
 
-**背后**：神策全埋点，事件 `sndd_sensor_autoTrack`，切路由自动发页面访问日志，还带 `refer_page_name`（来源页）链路。
+**背后**：神策全埋点，事件 `biz_sensor_autoTrack`，切路由自动发页面访问日志，还带 `refer_page_name`（来源页）链路。
 
 **注意**：**只在 App 根组件调一次**，业务页面不要重复调。
 
@@ -264,7 +264,7 @@ methods: {
     this.pausePageDuration();     // 把当前可见段累加进 pageStayDuration
     if (this.pageStayDuration > 0) {
       // 双系统上报时长
-      this.$tracker('sndd_hs_page', { /* ..., duration_ms */ });
+      this.$tracker('biz_hs_page', { /* ..., duration_ms */ });
       LogTrack.track({ /* ..., key1: {duration} */ }, 'page');
     }
     if (options.resetAfterFlush) { this.resetStayTrackState(); }
@@ -295,7 +295,7 @@ flowchart TD
     Q2 -- 是 --> E["E · EventComponent"]
     Q2 -- 否 --> Q3{"要统计停留时长?"}
     Q3 -- 是 --> G["G · 心跳"]
-    Q3 -- 否 --> Q4{"需求点名要 sndd_hs_xxx?"}
+    Q3 -- 否 --> Q4{"需求点名要 biz_hs_xxx?"}
     Q4 -- 是 --> Q5{"同时要老口径?"}
     Q5 -- 是 --> C["C · commLog 双发"]
     Q5 -- 否 --> T2["② $tracker"]

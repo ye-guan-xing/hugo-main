@@ -17,9 +17,9 @@ tags: ["前端工程"]
 
 | 字段 | 类型 | 含义 | 示例 |
 |---|---|---|---|
-| `page_name` | string | 页面中文名（业务定，全局唯一） | `少年闻天下` |
+| `page_name` | string | 页面中文名（业务定，全局唯一） | `每日资讯` |
 | `page_type` | number | 页面类型，本项目活动页统一 `2` | `2` |
-| `page_title` | string | 页面标题，一般同 page_name | `少年闻天下` |
+| `page_title` | string | 页面标题，一般同 page_name | `每日资讯` |
 | `url` | string | 当前页面地址 | `window.location.href` |
 | `main_item_id` | string | 主对象 id（点的是哪个课程 / 卡片） | `item.chapterId` |
 | `module_name` | string | 页面内模块名 | `课程列表`、`导航栏` |
@@ -137,8 +137,8 @@ flowchart TD
 
 | | ② $tracker（火山，新口径） | ① LogTrack（神策+自研，老口径） |
 |---|---|---|
-| 调用 | `this.$tracker('sndd_hs_xxx', payload)` | `LogTrack.track(payload, 'page')` |
-| 事件标识 | 事件名 `sndd_hs_page` / `sndd_hs_show` / `sndd_hs_click` | 事件类型 `page` / `show` / `click` |
+| 调用 | `this.$tracker('biz_hs_xxx', payload)` | `LogTrack.track(payload, 'page')` |
+| 事件标识 | 事件名 `biz_hs_page` / `biz_hs_show` / `biz_hs_click` | 事件类型 `page` / `show` / `click` |
 | 页面停留时长字段 | `duration_ms` | `duration` |
 | 模块曝光时长字段 | `duration_ms` | `expose_duration` |
 | 页面名字段 | `page_name` | `page_name` + `page_title` + `page_type` |
@@ -150,15 +150,15 @@ flowchart TD
 
 ```js
 // ② 新口径：火山
-this.$tracker('sndd_hs_page', {
-  page_name: '阅读能力诊断和成长规划报告',
+this.$tracker('biz_hs_page', {
+  page_name: '阅读能力诊断报告',
   page_id: this.userEvaluationId,
   duration_ms: this.pageStayDuration        // ← 注意是 duration_ms
 });
 
 // ① 老口径：神策+自研
 LogTrack.track({
-  page_name: '阅读能力诊断和成长规划报告',
+  page_name: '阅读能力诊断报告',
   page_title: '...',
   page_type: 2,
   url: window.location.href,
@@ -173,11 +173,11 @@ LogTrack.track({
 
 | page_name | page_type | 出处 |
 |---|---|---|
-| 少年闻天下 | 2 | newsSubscription |
-| 知识卡 | 2 | knowledgeCard/index |
-| 知识卡详情 | 2 | knowledgeCard/detail |
-| 阅读营给孩子的一封信 | 2 | emailReport |
-| 阅读能力诊断和成长规划报告 | - | readingDiagnosisReport |
+| 每日资讯 | 2 | newsSubscription |
+| 内容卡 | 2 | knowledgeCard/index |
+| 内容卡详情 | 2 | knowledgeCard/detail |
+| 阅读营信件 | 2 | emailReport |
+| 阅读能力诊断报告 | - | readingDiagnosisReport |
 | 测评报告 | - | stageEvaluationReport |
 | 专题详情页 | 2 | EventComponent（运营活动） |
 
@@ -203,7 +203,7 @@ LogTrack.track({
 - [ ] `page` / `show` 的 `btn_name` 填 `-` 或空
 - [ ] 双发场景 `duration_ms` / `duration` 别填反
 - [ ] 埋点代码在业务动作**之前**，互不影响
-- [ ] `$tracker` 事件名带 `sndd_hs_` 前缀
+- [ ] `$tracker` 事件名带 `biz_hs_` 前缀
 - [ ] 时长单位确认（毫秒 / 秒）
 
 ---
