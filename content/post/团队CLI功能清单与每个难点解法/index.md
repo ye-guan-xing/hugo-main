@@ -5,29 +5,29 @@ slug: "team-cli-features-and-pitfalls"
 title: "团队 CLI 功能清单：每个功能的难点与简单解法"
 categories: ["工程化", "Node.js"]
 tags: ["Node.js", "工程化", "CLI", "webpack", "Git"]
-description: "把一个团队 CLI 该有的功能列全，每个一句话点出难点，再给一个简单有效的解法。代码均脱敏"
+description: "把一个团队 CLI 该有的功能列全，每个一句话点出难点，再给一个简单有效的解法。"
 ---
 
 这篇把一个团队 CLI 该有的功能列全，每个功能一句话点出难点，再给一个简单有效的解法。代码均脱敏。
 
 ## 功能全景
 
-| 功能 | 难点 | 解法 |
-|------|------|------|
-| 命令注册分发 | 命令多了硬编码不可扩展 | 约定式 registry：`command/<name>/index.js` 导出 `main` |
-| 参数解析 | 别名/布尔/数组混 | `minimist` + 集中 `alias` 表 |
-| 脚手架 create | 模板与依赖版本耦合 | `git clone` 模板 + `npm view` 拉最新版本写入 deps |
-| 构建编排 build | 统一下发配置又不改业务码 | 文本改写 `vue.config.js` + 环境变量重定向 |
-| 构建期 HTML 注入 | 四类能力逐项目手抄 | `html-webpack-plugin` 钩子 + cheerio |
-| lint 治理 | 规则统一 + 严重度切换 | CLI 自带 eslintrc + env 切 mode |
-| git 钩子 | 规范靠人 | yorkie `gitHooks` 物化 + `pre-commit` 校验 |
-| 依赖安装 | 私有源 + 版本漂移 | 私有 registry + `--lock` 剥 `^/~` |
-| 自更新 | 频繁检查拖慢启动 | 本地 `checkdate` 周节制流 + 手写 semver |
-| 遥测 | 上报阻塞主流程 | `detached + unref + try/catch` |
-| 本地配置 | 污染宿主项目 | `~/.team-cli/` 目录 |
-| 终端体验 | 长任务无反馈 | `ora` spinner + `colors` + `inquirer` |
-| 跨平台 | POSIX 工具 Win 失败 | `shelljs` / 纯 Node API 替代（残留脆弱点见末尾） |
-| CI 集成 | 仓库带 dist + 小程序闭环 | dist 保留式提交 + `miniprogram-ci` + 群消息通知 |
+| 功能             | 难点                     | 解法                                                   |
+| ---------------- | ------------------------ | ------------------------------------------------------ |
+| 命令注册分发     | 命令多了硬编码不可扩展   | 约定式 registry：`command/<name>/index.js` 导出 `main` |
+| 参数解析         | 别名/布尔/数组混         | `minimist` + 集中 `alias` 表                           |
+| 脚手架 create    | 模板与依赖版本耦合       | `git clone` 模板 + `npm view` 拉最新版本写入 deps      |
+| 构建编排 build   | 统一下发配置又不改业务码 | 文本改写 `vue.config.js` + 环境变量重定向              |
+| 构建期 HTML 注入 | 四类能力逐项目手抄       | `html-webpack-plugin` 钩子 + cheerio                   |
+| lint 治理        | 规则统一 + 严重度切换    | CLI 自带 eslintrc + env 切 mode                        |
+| git 钩子         | 规范靠人                 | yorkie `gitHooks` 物化 + `pre-commit` 校验             |
+| 依赖安装         | 私有源 + 版本漂移        | 私有 registry + `--lock` 剥 `^/~`                      |
+| 自更新           | 频繁检查拖慢启动         | 本地 `checkdate` 周节制流 + 手写 semver                |
+| 遥测             | 上报阻塞主流程           | `detached + unref + try/catch`                         |
+| 本地配置         | 污染宿主项目             | `~/.team-cli/` 目录                                    |
+| 终端体验         | 长任务无反馈             | `ora` spinner + `colors` + `inquirer`                  |
+| 跨平台           | POSIX 工具 Win 失败      | `shelljs` / 纯 Node API 替代（残留脆弱点见末尾）       |
+| CI 集成          | 仓库带 dist + 小程序闭环 | dist 保留式提交 + `miniprogram-ci` + 群消息通知        |
 
 下面挑最关键的展开。
 
@@ -39,14 +39,14 @@ description: "把一个团队 CLI 该有的功能列全，每个一句话点出�
 
 ```js
 #!/usr/bin/env node
-const argv = require('minimist')(process.argv.slice(2));
-const alias = require('./command/alias');
+const argv = require("minimist")(process.argv.slice(2));
+const alias = require("./command/alias");
 
 function loadModule(name) {
   const sub = alias[name] || name;
   try {
     const mod = require(`./command/${sub}`);
-    if (typeof mod.main === 'function') return mod;
+    if (typeof mod.main === "function") return mod;
   } catch (e) {}
 }
 
@@ -56,8 +56,12 @@ invokeCommand(argv._[0], argv);
 ```js
 // alias.js —— 别名集中在一张表，加命令零侵入主调度
 module.exports = {
-  h: 'help', dev: 'serve', i: 'install',
-  up: 'update', v: 'version', hook: 'githook',
+  h: "help",
+  dev: "serve",
+  i: "install",
+  up: "update",
+  v: "version",
+  hook: "githook",
 };
 ```
 
@@ -86,16 +90,19 @@ flowchart TD
 ```js
 // 函数形态：在 configureWebpack 函数体的首个 { 后注入 plugins.push
 function setConfigWebpackStr(data) {
-  const paramsName = getConfigParame(fileConfig, 'configureWebpack'); // 还原形参名
+  const paramsName = getConfigParame(fileConfig, "configureWebpack"); // 还原形参名
   const newPluginStr = pluginStr.replace(/.plugins/, `${paramsName}.plugins`);
-  if (data.indexOf('configureWebpack') > -1) {
-    const [before, after] = data.split('configureWebpack');
-    const inserted = after.replace(/{/, `{${newPluginStr}`);  // 首个 { 注入
+  if (data.indexOf("configureWebpack") > -1) {
+    const [before, after] = data.split("configureWebpack");
+    const inserted = after.replace(/{/, `{${newPluginStr}`); // 首个 { 注入
     return `${requireStr}${before}configureWebpack${inserted}`;
   }
   // 未配置 configureWebpack：在 module.exports 首个 { 注入整个钩子
-  const [before, after] = data.split('module.exports');
-  const inserted = after.replace(/{/, `{configureWebpack: ${paramsName} => {${newPluginStr}},`);
+  const [before, after] = data.split("module.exports");
+  const inserted = after.replace(
+    /{/,
+    `{configureWebpack: ${paramsName} => {${newPluginStr}},`,
+  );
   return `${requireStr}${before}module.exports${inserted}`;
 }
 ```
@@ -103,12 +110,14 @@ function setConfigWebpackStr(data) {
 对象形态类似，沿 `plugins:` 切，在 `[` 处注入 `new X(),`。改写完写文件、设环境变量、起子进程：
 
 ```js
-fs.writeFileSync('build.override.config.js', rewritten);
-process.env.VUE_CLI_SERVICE_CONFIG_PATH = 'build.override.config.js';
-const command = spawn('npx', ['vue-cli-service', ...argv._], { stdio: 'inherit' });
-command.on('close', code => {
-  deleteFile('build.override.config.js');  // 清理临时文件
-  code === 0 ? spinner.succeed('成功') : spinner.fail(`失败: ${code}`);
+fs.writeFileSync("build.override.config.js", rewritten);
+process.env.VUE_CLI_SERVICE_CONFIG_PATH = "build.override.config.js";
+const command = spawn("npx", ["vue-cli-service", ...argv._], {
+  stdio: "inherit",
+});
+command.on("close", (code) => {
+  deleteFile("build.override.config.js"); // 清理临时文件
+  code === 0 ? spinner.succeed("成功") : spinner.fail(`失败: ${code}`);
   process.exit(code);
 });
 ```
@@ -124,14 +133,23 @@ command.on('close', code => {
 ```js
 class injectTime {
   apply(compiler) {
-    compiler.plugin('compilation', compilation => {
-      compilation.plugin('html-webpack-plugin-after-html-processing', (data, cb) => {
-        let html = data.html;
-        html = html.replace('</title>', '</title><script>window.__page_start__ = Date.now();</script>');
-        html = html.replace('</body>', '<script>window.__page_end__ = Date.now();</script></body>');
-        data.html = html;
-        cb && cb(data);
-      });
+    compiler.plugin("compilation", (compilation) => {
+      compilation.plugin(
+        "html-webpack-plugin-after-html-processing",
+        (data, cb) => {
+          let html = data.html;
+          html = html.replace(
+            "</title>",
+            "</title><script>window.__page_start__ = Date.now();</script>",
+          );
+          html = html.replace(
+            "</body>",
+            "<script>window.__page_end__ = Date.now();</script></body>",
+          );
+          data.html = html;
+          cb && cb(data);
+        },
+      );
     });
   }
 }
@@ -144,21 +162,28 @@ class injectBl {
   apply(compiler) {
     let pid;
     try {
-      if (fs.existsSync('cli.config.json')) {
-        pid = JSON.parse(fs.readFileSync('cli.config.json')).monitorPid;
-        if (!pid) return;  // 未配置 PID，跳过注入
-      } else { return; }
-    } catch (e) { return; }
+      if (fs.existsSync("cli.config.json")) {
+        pid = JSON.parse(fs.readFileSync("cli.config.json")).monitorPid;
+        if (!pid) return; // 未配置 PID，跳过注入
+      } else {
+        return;
+      }
+    } catch (e) {
+      return;
+    }
 
-    compiler.plugin('compilation', compilation => {
-      compilation.plugin('html-webpack-plugin-before-html-processing', (data, cb) => {
-        const $ = cheerio.load(data.html);
-        let probe = fs.readFileSync(probeFile).toString();
-        probe = probe.replace(/<placeholder-pid>/, pid);
-        $('#inject').text(probe);
-        data.html = $.html();
-        cb && cb(data);
-      });
+    compiler.plugin("compilation", (compilation) => {
+      compilation.plugin(
+        "html-webpack-plugin-before-html-processing",
+        (data, cb) => {
+          const $ = cheerio.load(data.html);
+          let probe = fs.readFileSync(probeFile).toString();
+          probe = probe.replace(/<placeholder-pid>/, pid);
+          $("#inject").text(probe);
+          data.html = $.html();
+          cb && cb(data);
+        },
+      );
     });
   }
 }
@@ -176,24 +201,25 @@ class injectBl {
 function preCommit(args) {
   const branch = getCurrentBranchName().toLowerCase();
   const files = getGitDiff();
-  const eslintFiles = files.filter(f =>
-    ['.js', '.vue', '.ts'].includes('.' + getFileFormat(f).extend));
+  const eslintFiles = files.filter((f) =>
+    [".js", ".vue", ".ts"].includes("." + getFileFormat(f).extend),
+  );
 
-  checkGitEmail();              // 邮箱域白名单
+  checkGitEmail(); // 邮箱域白名单
   const conflicts = checkConflicts(files);
   if (conflicts.length > 0) {
-    Logger.log('未解决冲突，请修复后再提交');
+    Logger.log("未解决冲突，请修复后再提交");
     process.exit(1);
   }
-  eslint({ isProd: branch === 'master', files: eslintFiles });
+  eslint({ isProd: branch === "master", files: eslintFiles });
 }
 
 function checkGitEmail() {
-  const email = getGitInfo('user.email').toLowerCase();
+  const email = getGitInfo("user.email").toLowerCase();
   const reg = /@company\.com$/i;
   // ci-bot 为编译账户，允许提交
-  if (email !== 'ci-bot' && !reg.test(email)) {
-    Logger.log('请用公司邮箱: git config user.email name@company.com');
+  if (email !== "ci-bot" && !reg.test(email)) {
+    Logger.log("请用公司邮箱: git config user.email name@company.com");
     process.exit(1);
   }
 }
@@ -217,7 +243,7 @@ master 分支按 `prod` 严格挡 `console/debugger`，其他分支 `test` 放�
 ```js
 const dayStep = 7;
 function isChecked() {
-  const checkDateStr = readLocalConfig('checkdate');
+  const checkDateStr = readLocalConfig("checkdate");
   if (checkDateStr) {
     if (compareAsc(new Date(), new Date(checkDateStr)) < 0) return true; // 本周已检查
     saveCheckDate();
@@ -228,9 +254,11 @@ function isChecked() {
 }
 
 function compareVersion(a, b) {
-  const pa = a.split('.'), pb = b.split('.');
+  const pa = a.split("."),
+    pb = b.split(".");
   for (let i = 0; i < 3; i++) {
-    const na = +pa[i], nb = +pb[i];
+    const na = +pa[i],
+      nb = +pb[i];
     if (na > nb) return 1;
     if (nb > na) return -1;
   }
@@ -249,9 +277,9 @@ function compareVersion(a, b) {
 ```js
 function lockDepsVer(depList) {
   const pkg = readPackageJSON();
-  depList.forEach(dep => {
+  depList.forEach((dep) => {
     const v = pkg.dependencies[dep];
-    if (v) pkg.dependencies[dep] = v.replace(/^[\^~]/, '');
+    if (v) pkg.dependencies[dep] = v.replace(/^[\^~]/, "");
   });
   writePackageJSON(pkg);
 }
@@ -292,9 +320,9 @@ flowchart LR
 
 **扩展跨平台**：用 `shelljs`（`shell.rm('-rf', x)`）或纯 Node API（`fs.rmSync(x, {recursive:true, force:true})`）替代 POSIX 调用。
 
-| | 好处 | 坏处 |
-|---|------|------|
-| `shelljs` | 贴近 shell 写法、改动小 | 多一个依赖、部分命令比原生慢 |
-| 纯 Node API | 零依赖、最快、最可控 | 写法啰嗦、`tar` 压缩等无标准库等价物需引包 |
+|             | 好处                    | 坏处                                       |
+| ----------- | ----------------------- | ------------------------------------------ |
+| `shelljs`   | 贴近 shell 写法、改动小 | 多一个依赖、部分命令比原生慢               |
+| 纯 Node API | 零依赖、最快、最可控    | 写法啰嗦、`tar` 压缩等无标准库等价物需引包 |
 
 取舍：团队环境稳定且封闭 → POSIX 可接受；团队有跨系统可能或要开源 → 一开始就用纯 Node API，`tar` 这类用 `archiver` 之类的包补齐。
