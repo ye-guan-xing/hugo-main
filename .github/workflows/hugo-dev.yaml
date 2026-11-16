@@ -30,8 +30,7 @@ jobs:
 
         - name: Setup Dart Sass
           run: |
-            URL=$(curl -s https://api.github.com/repos/sass/dart-sass/releases/latest | jq -r '.assets[] | select(.name | test("linux-x64.tar.gz$")) | .browser_download_url')
-            curl -sSL -o dart-sass.tar.gz "$URL"
+            curl -sSL -o dart-sass.tar.gz https://github.com/sass/dart-sass/releases/download/1.108.2/dart-sass-1.108.2-linux-x64.tar.gz
             tar -xzf dart-sass.tar.gz
             echo "$PWD/dart-sass" >> "$GITHUB_PATH"
 
